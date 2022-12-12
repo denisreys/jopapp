@@ -1,0 +1,329 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css2?family=Neucha&display=swap');
+@import "fontawesome/scss/fontawesome.scss";
+@import "fontawesome/scss/solid.scss";
+@import "fontawesome/scss/light.scss";
+
+
+
+// Variables
+@import 'variables';
+input, button, select, option {
+  font-family: 'Neucha', cursive;
+  font-weight: 300;
+  letter-spacing: 0.8px;
+  font-size: 18px;
+  color: $black;
+
+  &:disabled {
+    background: inherit;
+    opacity: 0.6;
+  }
+}
+:hover {
+  transition: visibility 0s, opacity 0.1s linear;
+}
+optgroup, option {
+  font-size: 15px;
+  text-decoration: none;
+  font-style: normal;
+}
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+a {
+  line-height: 1;
+}
+
+
+body {
+  font-family: 'Neucha', cursive;
+  letter-spacing: 0.8px;
+  font-size: 18px;
+  color: $black;
+  margin:0;
+}
+.container {
+  margin: auto;
+  overflow: hidden;
+}
+.container--dashboard {
+  max-width: 1120px;
+  padding: 30px 40px;
+  display: flex;
+  flex: 1;
+}
+.container--auth {
+  max-width: 400px;
+  padding: 20px;
+}
+.main {
+  flex: 1;
+  order: 2;
+  margin: 0 35px;
+  overflow: hidden;
+}
+.sb--l {
+  width: 200px;
+  order: 1;
+}
+.sb--r {
+  width: 200px;
+  order: 3;
+}
+.sb {
+  &>*:not(:last-child) {
+    margin-bottom: 30px;
+  }
+}
+.w-100 {
+  width: 100%;
+}
+.sb__block {
+  position: relative;
+  border: solid 2px $black;
+  border-radius: 2px;
+
+  &:hover {
+    .sb__block__title {
+      opacity: 0;
+    }
+    .sb__add {
+      display: block;
+    }
+  }
+}
+.sb__block__title {
+  margin-top: -12px;
+  text-align: center;
+}
+.sb__block__title__span {
+  background: #fff;
+  padding: 0 15px;
+  text-transform: uppercase;
+  letter-spacing: 2.4px;
+  font-size: 16px;
+}
+.sb__desc {
+  font-size: 14px;
+  color: $light-gray;
+}
+.sb__list, .sb__desc {
+  padding: 20px 15px;
+}
+.sb__list__item {
+  margin-bottom: 8px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+.sb__list__item__name {
+  margin-left: 20px;
+  font-size: 18px;
+}
+.sb__add {
+  position: absolute;
+  top: -13px;
+  width: 100%;
+  text-align: center;
+  display: none;
+}
+.sb__add__btn {
+  text-decoration: none;
+  padding: 0 15px;
+  background: #fff;
+  color: $black;
+
+  .fal {
+    font-size: 24px;
+  }
+}
+
+.sb__block__title {
+text-align: center;
+}
+.sb__list__check {
+  float: left;
+  position: relative;
+
+  input {
+    opacity: 0;
+    z-index: -1;
+    position: absolute;
+  }
+  .sb__list__check__fake {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border: 2px solid $black;
+    border-radius: 30px;
+    cursor: pointer;
+  }
+}
+.sb__list__check>input:checked+.sb__list__check__fake{
+  background: $black;
+}
+.sb__list__check>input:not(:checked)+.sb__list__check__fake:hover{
+  background: #e8e8e8;
+}
+.stat__count {
+  text-align: center;
+}
+.stat__count__n {
+  font-size: 64px;
+  line-height: 54px;
+  background: #fff;
+  padding: 0 18px;
+}
+.header__bottom {
+  .calendar, .flow {
+    flex: 0 1 250px;
+  }
+  .panel {
+    align-self: flex-end;
+  }
+}
+.header__bottom__title {
+  margin-bottom: 10px;
+}
+.input-group {
+  margin-bottom: 15px;
+  overflow: hidden;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+.input-group--inline {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  .input-group__item {
+    flex-basis: calc(50% - 8px);
+    box-sizing: border-box;
+  }
+}
+.label {
+  font-size: 15px;
+  margin-bottom: 6px;
+  display: block;
+}
+.input, .select {
+  border: solid 1px $border;
+  padding: 10px;
+  font-size: 18px;
+  box-sizing: border-box;
+  border-radius: 2px;
+
+  &:focus {
+    border: 1px solid #75b4f7;
+    outline: none;
+  }
+}
+.select--icon {
+  font-family: 'Lato', 'Font Awesome 5 Pro';
+  font-weight: 300;
+}
+.btn {
+  padding: 10px 16px;
+  border-radius: 2px;
+  outline: none;
+  box-shadow: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+.btn--default {
+  border: 1px solid $border;
+  background: #fff;
+}
+.btn--submit {
+  border: 1px solid #e3d3aa;
+  background-color: $main;
+}
+
+.checkboxes {
+  float: left;
+
+  .checkboxes__input {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+  }
+  .checkboxes__label {
+    float: left;
+    user-select: none;
+    cursor: pointer;
+  }
+}
+.checkboxes--color {
+  padding-right: 4px;
+  padding-bottom: 4px;
+
+  .checkboxes__label {
+    height: 28px;
+    border-radius: 30px;
+    width: 28px;
+    border: solid 2px transparent;
+    box-sizing: border-box;
+  }
+
+  /* стили при наведении курсора на радио */
+  .checkboxes__input:not(:disabled):not(:checked) + .checkboxes__label:hover {
+    opacity: 0.9;
+  }
+  /* стили для активной радиокнопки (при нажатии на неё) */
+  .checkboxes__inputo:not(:disabled):active + .checkboxes__label {
+    opacity: 0.9;
+  }
+  /* стили для радиокнопки, находящейся в состоянии checked */
+  .checkboxes__input:checked + .checkboxes__label {
+    border-color: $black;
+  }
+}
+.checkboxes--icon {
+  padding-right: 7px;
+  padding-bottom: 7px;
+
+  .checkboxes__label {
+    opacity: 0.4;
+  }
+  .fal {
+    font-size: 24px;
+  }
+  /* стили при наведении курсора на радио */
+  .checkboxes__input:not(:disabled):not(:checked) + .checkboxes__label:hover {
+    opacity: 0.6;
+  }
+  /* стили для активной радиокнопки (при нажатии на неё) */
+  .checkboxes__inputo:not(:disabled):active + .checkboxes__label {
+    opacity: 0.8;
+  }
+  /* стили для радиокнопки, находящейся в состоянии checked */
+  .checkboxes__input:checked + .checkboxes__label {
+    opacity: 1;
+  }
+}
+.tabs {
+  overflow: hidden;
+
+}
+.tabs--popup {
+  margin-bottom: 20px;
+
+  .tabs__item {
+    float: left;
+    padding: 5px 12px;
+    margin-right: 2px;
+    display: block;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  .active {
+    background-color: $main;
+  }
+}
