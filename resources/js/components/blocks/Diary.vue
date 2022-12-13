@@ -21,12 +21,12 @@
         <div class="diary__affairs" v-if="day.todoes.length">
           <affair
             v-for="todo in day.todoes"
-            :key="todo.id"
+            :key="todo.affair.id"
             class="affair--small"
-            :id="todo.id"
+            :id="todo.affair.id"
             :date="day.date"
-            :name="todo.name"
-            :checked="todo.check">
+            :name="todo.affair.name"
+            :checked="todo.affair.check">
             <template v-slot:actions>
               <div class="affair__actions">
                 <a href="#" class="affair__actions__item affair__actions__item--delete" @click.prevent="diaryDelete(todo.id)"><i class="fal fa-times"></i></a>
@@ -52,18 +52,18 @@
         <li class="tabs__item" v-for="tab in popups.addTodo.tabs.items" :class="{'active' : popups.addTodo.tabs.active == tab.id}" @click="popups.addTodo.tabs.active = tab.id">{{tab.name}}</li>
       </ul>
       <div class="input-group" v-if="popups.addTodo.tabs.active == 1">
-        <span v-if="popups.addTodo.form.errors['new.name']">
-          {{popups.addTodo.form.errors['new.name'][0]}}
+        <span v-if="popups.addTodo.form.errors['name']">
+          {{popups.addTodo.form.errors['name'][0]}}
         </span>
         <label for="popup-diary-newaffairname" class="label label--default">New affair</label>
         <input type="text" ref="groupCreate" class="input w-100" placeholder="What do u want to do?" id="popup-diary-newaffairname" v-model="popups.addTodo.form.newAffairName">
       </div>
       <div class="input-group" v-else-if="popups.addTodo.tabs.active === 2">
         <label for="popup-diary-regular" class="label label--default">It's a regular</label>
-        <select id="popup-diary-regular" class="select w-100" v-model="popups.addTodo.form.regularAffairId">
+        <select id="popup-diary-regular" class="select w-100" v-model="popups.addTodo.form.selectedAffair.id" @change="changeDisabledInputs(event)">
           <option value="" selected>Не выбрано</option>
           <optgroup v-for="group in popups.addTodo.form.regularAffairs" :label="group.name">
-            <option v-for="affair in group.regular_affairs" :value="affair.id" @click="popups.addTodo.form.group = group.id;popups.addTodo.form.points = affair.points">{{affair.name}}</option>
+            <option v-for="affair in group.affairs" :value="affair.id">{{affair.name}}</option>
           </optgroup>
         </select>
       </div>
@@ -132,7 +132,11 @@
                 month_name: '',
                 full_date: ''
               },
-              regularAffairId: '',
+              selectedAffair: {
+                id: '',
+                group_id: '',
+                points: ''
+              },
               newAffairName: '',
               points: 3,
               group: '',
@@ -145,29 +149,42 @@
     },
     methods: {
       addTodoSubmit(){
-        var data = {'date': this.popups.addTodo.form.date.full_date, 'new': {}, 'regular': ''};
+        var data = {'date': this.popups.addTodo.form.date.full_date};
 
         if(this.popups.addTodo.tabs.active == 1){
-          data['new']['name'] = this.popups.addTodo.form.newAffairName;
-          data['new']['points'] = this.popups.addTodo.form.points;
-          data['new']['group'] = this.popups.addTodo.form.group;
+          data['name'] = this.popups.addTodo.form.newAffairName;
+          data['points'] = this.popups.addTodo.form.points;
+          data['group_id'] = this.popups.addTodo.form.group;
         }
-        else if(this.popups.addTodo.tabs.active == 2) data['regular'] = this.popups.addTodo.form.regularAffairId;
+        else if(this.popups.addTodo.tabs.active == 2) data['id'] = this.popups.addTodo.form.selectedAffair.id;
 
         axios.post('/api/addtodo', data).then((r) =>{
           this.$refs.popupAddTodo.popupClose();
           this.getDiaryList();
-          this.popups.addTodo.form.regularAffairId = this.popups.addTodo.form.group = this.popups.addTodo.form.newAffairName = '';
+          this.popups.addTodo.form.selectedAffair.id = this.popups.addTodo.form.selectedAffair.group_id = this.popups.addTodo.form.selectedAffair.points = this.popups.addTodo.form.group = this.popups.addTodo.form.newAffairName = '';
           this.popups.addTodo.form.points = 3;
           this.popups.addTodo.form.errors = [];
         }).catch((error) =>{
+          console.log(error);
           this.popups.addTodo.form.errors = error.response.data.errors;
         });
       },
       getRegularList(){
         axios.get('/api/getregular')
           .then((responce) => {
+            console.log(responce.data);
             this.popups.addTodo.form.regularAffairs = responce.data;
+        });
+      },
+      changeDisabledInputs(event){
+        this.popups.addTodo.form.regularAffairs.forEach((group) => {
+          group.affairs.forEach((affair) => {
+            if(affair.id == this.popups.addTodo.form.selectedAffair.id){
+              this.popups.addTodo.form.group = affair.group_id; 
+              this.popups.addTodo.form.points = affair.points;
+              return true;
+            }
+          });
         });
       },
       getDiaryList(){
@@ -211,6 +228,7 @@
       diaryDelete(todo_id){
         if(todo_id){
           axios.post('/api/deletetodo', {id: todo_id}).then((r) =>{
+            console.log(r);
             this.getDiaryList();
           });
         }
@@ -241,9 +259,12 @@
   }
   .diary__show__a {
     color: $black;
-    background: #fff;
+
     padding: 5px 10px;
     display: block;
+  }
+  .diary__show__a:hover {
+    background: #eaddbd71;
   }
   .diary__item {
     flex-basis: calc(50% - 12px);

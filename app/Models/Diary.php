@@ -7,7 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Diary extends Model
 {
+    public $timestamps = false;
     use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'date',
+        'group_id',
+        'name',
+        'affair_id'
+    ];
 
     public function affair(){
         return $this->belongsTo(Affair::class);

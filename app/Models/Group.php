@@ -19,6 +19,6 @@ class Group extends Model
     ];
 
     public function affairs(){
-        return $this->hasMany(Affair::class)->where('active', 1);
+        return $this->hasMany(Affair::class)->where(['active' => 1, 'state' => 2]);
     }
 }

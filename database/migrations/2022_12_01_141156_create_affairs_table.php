@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('points');
             $table->integer('group_id');
             $table->integer('user_id');
+            $table->tinyInteger('state');
             $table->tinyInteger('active')->default('1');
             $table->timestamps();
         });

@@ -13,6 +13,7 @@ class RegularController extends Controller
     public function createGroup(Request $request){
         $group = $request->all();
         $group['user_id'] = Auth::id();
+        $group['state'] = 2;
 
         $validator = Validator($group, [
             'name' => 'required|min:1|max:50',

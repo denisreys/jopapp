@@ -15,7 +15,8 @@ class Affair extends Model
         'points',
         'active',
         'group_id',
-        'user_id'
+        'user_id',
+        'state'
     ];
 
     public function check(){
@@ -26,5 +27,8 @@ class Affair extends Model
     }
     public function checks(){
         return $this->hasMany(Check::class);
+    }
+    public function diary(){
+        return $this->hasOne(Diary::class);
     }
 }
