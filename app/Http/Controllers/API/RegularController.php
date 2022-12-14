@@ -85,10 +85,11 @@ class RegularController extends Controller
     public function createAffair(Request $request){
         $array = $request->all();
         $array['user_id'] = Auth::id();
+        $array['state'] = 2;
 
         $validator = Validator($array, [
             'name' => 'required|min:1|max:50',
-            'points' => 'required',
+            'points' => 'required|numeric|between:1,5',
             'user_id' => 'required',
             'group_id' => 'required'
         ]);
@@ -103,7 +104,7 @@ class RegularController extends Controller
         $isGroupYours = Group::where(['id' => $array['group_id'], 'user_id' => $array['user_id']])->first();
         
         if($isGroupYours){
-            return Affair::create(['name' => $array['name'], 'points' => $array['points'], 'group_id' => $array['group_id'], 'user_id' => $array['user_id']]);
+            return Affair::create($array);
         }
     }
     public function editAffair(Request $request){
@@ -113,7 +114,7 @@ class RegularController extends Controller
         $validator = Validator($array, [
             'id' => 'required',
             'name' => 'required|min:1|max:50',
-            'points' => 'required',
+            'points' => 'required|numeric|between:1,5',
             'user_id' => 'required'
         ]);
         if($validator->fails()) {

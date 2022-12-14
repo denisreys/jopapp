@@ -6,7 +6,7 @@
         <a href="#" class="affairs__header__add__a" @click.prevent="$refs.popupGroupCreate.popupShow();"><i class="fal fa-plus"></i></a>
       </div>
     </div>
-    <ul class="regular__list">
+    <ul class="regular__list" v-if="list.length != 0">
       <li class="regular__item" v-for="group in list">
         <div class="group">
           <ul class="group__actions">
@@ -54,6 +54,7 @@
         </div>
       </li>
     </ul>
+    <div>Добавьте свою первую группу дел</div>
 
     <!-- СОЗДАТЬ НОВУЮ ГРУППУ -->
     <v-popup

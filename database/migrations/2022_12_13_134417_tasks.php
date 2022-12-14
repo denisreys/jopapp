@@ -13,14 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('affairs', function (Blueprint $table) {
+        Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('points');
-            $table->integer('group_id')->default(null);
             $table->integer('user_id');
-            $table->tinyInteger('state')->default(null);
-            $table->tinyInteger('active')->default('1');
+            $table->integer('points');
             $table->timestamps();
         });
     }
@@ -32,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('affairs');
+        //
     }
 };

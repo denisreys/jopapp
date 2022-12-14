@@ -8,7 +8,7 @@
         <i class="fal fa-plus"></i>
       </a>
     </div>
-    <template v-if="notes.length">
+    <template v-if="notes.length != 0">
       <ul class="sb__list" ref="notes">
           <li class="sb__list__item note" v-for="note in notes" :key="note.id">
             <div class="note__icon">-</div>

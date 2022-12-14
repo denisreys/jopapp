@@ -7,7 +7,7 @@
 
       </div>
       <div class="sb sb--r">
-        <!---<tasks/>--->
+        <tasks/>
         <notes/>
       </div>
       <div class="main">

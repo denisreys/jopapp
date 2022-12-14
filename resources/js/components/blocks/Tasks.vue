@@ -8,14 +8,14 @@
         <i class="fal fa-plus"></i>
       </a>
     </div>
-    <template v-if="tasks.length">
+    <template v-if="tasks.length != 0">
       <ul class="sb__list">
         <li class="sb__list__item note" v-for="task in tasks" :key="task.id">
           <affair
             class="affair--sb"
             :id="task.id"
             :name="task.name"
-            :checked="task.check.length">
+            :checked="task.check">
             <template v-slot:actions>
               <div class="affair__actions">
                 <a href="#" class="affair__actions__item affair__actions__item--edit" @click.prevent="
@@ -44,7 +44,7 @@
       :btnSubmitName="popups.taskAdd.btnSubmitName"
       @popupSubmit="taskAddSubmit()">
       <p v-if="popups.taskAdd.form.errors.name">{{popups.taskAdd.form.errors.name[0]}}</p>
-      <p v-if="popups.taskEdit.form.errors.points">{{popups.taskAdd.form.errors.points[0]}}</p>
+      <p v-if="popups.taskAdd.form.errors.points">{{popups.taskAdd.form.errors.points[0]}}</p>
       <div class="input-group">
         <input type="text" class="input w-100" placeholder="What're the plans?" v-model="popups.taskAdd.form.name">
       </div>
@@ -151,7 +151,7 @@
         });;
       },
       taskDelete(){
-        axios.post('/api/deleteaffair', this.popups.taskEdit.form).then((r) => {
+        axios.post('/api/deletetask', this.popups.taskEdit.form).then((r) => {
           this.$refs.popupTaskEdit.popupClose();
           this.popups.taskEdit.form.id = this.popups.taskEdit.form.name = this.popups.taskEdit.form.points = '';
           this.popups.taskEdit.form.errors = [];
@@ -162,6 +162,7 @@
       },
       getTasks(){
         axios.get('/api/gettasks').then((r) => {
+          console.log(r);
           this.tasks = r.data;
         });
       }
