@@ -80,6 +80,10 @@
     border-top: solid 1px $border;
     padding: 20px 30px;
     overflow: hidden;
+
+    .btn {
+      float: left;
+    }
   }
   .popup__footer__additional {
     float: left;
@@ -91,6 +95,10 @@
   }
   .popup__footer__btns {
     float: right;
+
+    .btn {
+      margin-left: 10px;
+    }
   }
   .popup__title {
     font-size: 16px;

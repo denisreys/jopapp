@@ -20,6 +20,9 @@ input, button, select, option {
     opacity: 0.6;
   }
 }
+a {
+  text-decoration: none;
+}
 :hover {
   transition: visibility 0s, opacity 0.1s linear;
 }
@@ -51,12 +54,12 @@ body {
 }
 .container--dashboard {
   max-width: 1120px;
-  padding: 30px 40px;
+  padding: 40px;
   display: flex;
   flex: 1;
 }
 .container--auth {
-  max-width: 400px;
+  max-width: 350px;
   padding: 20px;
 }
 .main {
@@ -224,6 +227,9 @@ text-align: center;
     outline: none;
   }
 }
+.w-100 {
+  width: 100%;
+}
 .select--icon {
   font-family: 'Lato', 'Font Awesome 5 Pro';
   font-weight: 300;
@@ -235,6 +241,11 @@ text-align: center;
   box-shadow: none;
   cursor: pointer;
   font-size: 16px;
+  display: block;
+  box-sizing: border-box;
+  color: $black;
+  text-align: center;
+  line-height: 1;
 }
 .btn--default {
   border: 1px solid $border;
@@ -326,4 +337,23 @@ text-align: center;
   .active {
     background-color: $main;
   }
+}
+//AUTH
+.auth {
+  .input {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
+.auth__header {
+  margin-bottom: 10px;
+}
+.auth__header__img {
+  box-sizing: border-box;
+  max-width: 100%;
+  padding: 20px 60px;
+}
+.auth__links {
+  margin-top: 10px;
+
 }

@@ -17,9 +17,12 @@
   import axios from 'axios';
 
   export default {
+    props: {
+      updateTotal: Number
+    },
     data () {
       return {
-        total: '',
+        total: 0,
         oldTotal: '',
         bomb: '',
         countLoad: 0,
@@ -31,19 +34,24 @@
         this.oldTotal = this.total;
 
         axios.get('/api/statlistupdate')
-          .then((responce) => {
+          .then((response) => {
             if(this.countLoad == 0 || !isbomb){
               this.countLoad++;
             }
             else if(this.countLoad > 0 && isbomb){
-              if(responce.data.points >= 50 && this.oldTotal < 50 || responce.data.points >= 100 && this.oldTotal < 100){
+              if(response.data.total >= 50 && this.oldTotal < 50 || response.data.total >= 100 && this.oldTotal < 100){
                 this.bomb = '/images/bomb.gif?3ee01c3566d3875da7c87af880baffad';
-                setTimeout(() => this.bomb = '', 1800);
+                setTimeout(() => this.bomb = '', 1600);
               }
             }
-            this.total = responce.data.points;
-            this.diagram = responce.data.diagram;
+            this.total = response.data.total;
+            this.diagram = response.data.diagram;
         });
+      }
+    },
+    watch: {
+      updateTotal: function (val) {
+        this.statListUpdate(true);
       }
     },
     mounted() {

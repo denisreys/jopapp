@@ -15,7 +15,7 @@
             class="affair--sb"
             :id="task.id"
             :name="task.name"
-            :checked="task.check">
+            :checked="task.check_week">
             <template v-slot:actions>
               <div class="affair__actions">
                 <a href="#" class="affair__actions__item affair__actions__item--edit" @click.prevent="
@@ -162,7 +162,6 @@
       },
       getTasks(){
         axios.get('/api/gettasks').then((r) => {
-          console.log(r);
           this.tasks = r.data;
         });
       }

@@ -1,13 +1,21 @@
 <template>
-    <div>
-        <form @submit.prevent="formSubmit">
-            <input type="text" placeholder="Add your name" v-model="form.name"/>
-            <input type="email" placeholder="Add email" v-model="form.email"/>
-            <input type="password" placeholder="Add password" v-model="form.password"/>
-            <input type="password" placeholder="Add password again" v-model="form.c_password"/>
-            <input type="submit" value="Register"/>
-        </form>
-        <p v-if="error">{{error}}</p>
+    <div class="container container--auth">
+        <div class="auth">
+            <div class="auth__header">
+                <img class="auth__header__img" src="/images/dog2.jpg" alt="good dog">
+                <p v-if="error">{{error}}</p>
+            </div>
+            <form class="auth__form" @submit.prevent="formSubmit">
+                <input class="input" type="text" placeholder="Add your name" v-model="form.name"/>
+                <input class="input" type="email" placeholder="Add email" v-model="form.email"/>
+                <input class="input" type="password" placeholder="Add password" v-model="form.password"/>
+                <input class="input" type="password" placeholder="Add password again" v-model="form.c_password"/>
+                <input type="submit" class="btn btn--submit w-100" value="Register"/>
+            </form>
+            <div class="auth__links">
+                <router-link :to="{ name: 'login' }" class="btn btn--default w-100">Login</router-link>
+            </div>
+        </div>
     </div>
 </template>
 <script>

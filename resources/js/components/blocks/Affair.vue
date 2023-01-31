@@ -29,8 +29,9 @@
     methods: {
       changeCheckAffair(){
         axios.post('/api/createorupdatecheck', {affair_id: this.id, date: this.date, status: this.selected}).then((r) => {
-          //this.$root.$children['0'].$refs.total.statListUpdate(this.selected);
+          this.$parent.$parent.updateStat();
         }).catch((error) =>{
+          console.log(error);
           alert('АШИБКА')
         });
       }

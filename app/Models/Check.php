@@ -13,7 +13,11 @@ class Check extends Model
 
     protected $fillable = [
         'affair_id',
-        'date'
+        'date',
+        'points'
     ];
 
+    public function affair(){
+        return $this->belongsTo(Affair::class);
+    }
 }

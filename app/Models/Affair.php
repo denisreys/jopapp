@@ -25,10 +25,19 @@ class Affair extends Model
     public function checkToday(){
         return $this->hasOne(Check::class);
     }
+    public function checkWeek(){
+        return $this->hasOne(Check::class)->whereDate('date', '>=', Carbon::now()->subWeek());
+    }
+    public function checkLastWeek(){
+        return $this->hasOne(Check::class)->whereDate('date', '<=', Carbon::now()->subWeek());
+    }
     public function checks(){
         return $this->hasMany(Check::class);
     }
     public function diary(){
         return $this->hasOne(Diary::class);
+    }
+    public function group(){
+        return $this->belongsTo(Group::class);
     }
 }

@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('checks', function (Blueprint $table) {
             $table->id();
             $table->integer('affair_id');
+            $table->tinyInteger('points');
             $table->datetime('date');
         });
     }

@@ -1,10 +1,9 @@
 <template>
     <div class="container container--dashboard">
       <div class="sb sb--l">
-        <total ref="total"/>
+        <total :updateTotal="updateTotal"/>
         <calendar/>
-          <button @click.prevent='logout'>Logout</button>
-
+          <a href="#" @click.prevent='logout'>Logout</a>
       </div>
       <div class="sb sb--r">
         <tasks/>
@@ -31,14 +30,18 @@
       },
       data(){
         return {
-          user: null
+          user: null,
+          updateTotal: 0
         }
       },
       methods: {
         logout(){
             localStorage.removeItem('token');
             this.$router.push('/login')
-        } 
+        },
+        updateStat(){
+          this.updateTotal++;
+        }
       },
       mounted(){
         axios.get('/api/user').then((res)=>{

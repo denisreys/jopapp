@@ -19,25 +19,30 @@ class CheckController extends Controller
         if(!$request['date']) $array['check_date'] = Carbon::now();
         else $array['check_date'] = date_create($request['date']);
         
-        $isThisAffairsYours = Affair::where([
+        $affair = Affair::where([
             'id' => $array['affair_id'], 
             'user_id' => $array['user_id']
         ])->first();
         
-        if($isThisAffairsYours){
+        if($affair){
             if($array['status']){
-                Check::create(['affair_id' => $array['affair_id'], 'date' => $array['check_date']]);
+                Check::create(['affair_id' => $affair['id'], 'points' => $affair['points'], 'date' => $array['check_date']]);
             }
             else {
                 if($array['check_date']){
-                    Check::where('affair_id', $array['affair_id'])
-                        ->whereDay('date', $array['check_date'])
-                        ->delete();
+                    if($affair['state'] == 3){
+                        Check::where('affair_id', $affair['id'])
+                                ->delete();
+                    }else {
+                        Check::where('affair_id', $affair['id'])
+                            ->whereDay('date', $array['check_date'])
+                            ->delete();
+                    }
                 }
                 else {
-                    Check::where('affair_id', $array['affair_id'])
-                        ->whereDay('date', Carbon::today())
-                        ->delete();
+                    Check::where('affair_id', $affair['id'])
+                    ->whereDay('date', Carbon::today())
+                    ->delete();
                 }    
             }
         }

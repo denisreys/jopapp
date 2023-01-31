@@ -165,14 +165,12 @@
           this.popups.addTodo.form.points = 3;
           this.popups.addTodo.form.errors = [];
         }).catch((error) =>{
-          console.log(error);
           this.popups.addTodo.form.errors = error.response.data.errors;
         });
       },
       getRegularList(){
         axios.get('/api/getregular')
           .then((responce) => {
-            console.log(responce.data);
             this.popups.addTodo.form.regularAffairs = responce.data;
         });
       },
@@ -190,7 +188,6 @@
       getDiaryList(){
         axios.get('/api/getdiary')
           .then((response) => {
-            console.log(response);
             if(!this.week.length){
               this.week = response.data;
               this.$nextTick(() => {
@@ -228,7 +225,6 @@
       diaryDelete(todo_id){
         if(todo_id){
           axios.post('/api/deletetodo', {id: todo_id}).then((r) =>{
-            console.log(r);
             this.getDiaryList();
           });
         }
@@ -264,7 +260,7 @@
     display: block;
   }
   .diary__show__a:hover {
-    background: #eaddbd71;
+    text-decoration: underline;
   }
   .diary__item {
     flex-basis: calc(50% - 12px);

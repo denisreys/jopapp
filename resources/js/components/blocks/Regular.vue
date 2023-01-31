@@ -54,7 +54,7 @@
         </div>
       </li>
     </ul>
-    <div>Добавьте свою первую группу дел</div>
+    <div v-else>Добавьте свою первую группу дел</div>
 
     <!-- СОЗДАТЬ НОВУЮ ГРУППУ -->
     <v-popup
@@ -356,7 +356,6 @@
       getRegularList(){
         axios.get('/api/getregular')
           .then((response) => {
-            console.log(response);
             this.list = response.data;
         });
       },

@@ -14,8 +14,9 @@ class TaskController extends Controller
 
         if($user_id){
             $jopa = Affair::where(['user_id' => $user_id, 'state' => 3, 'active' => 1])
+                        ->doesntHave('checkLastWeek')
                         ->orderBy('id')
-                        ->with('check')->get();
+                        ->with('checkWeek')->get();
 
             return response()->json($jopa, 200);            
         }
