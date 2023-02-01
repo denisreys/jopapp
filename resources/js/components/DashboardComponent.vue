@@ -3,11 +3,11 @@
       <div class="sb sb--l">
         <total :updateTotal="updateTotal"/>
         <calendar/>
-          <a href="#" @click.prevent='logout'>Logout</a>
       </div>
       <div class="sb sb--r">
         <tasks/>
         <notes/>
+        <a href="#" @click.prevent='logout'>Logout</a>
       </div>
       <div class="main">
         <diary/>

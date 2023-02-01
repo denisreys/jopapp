@@ -16,7 +16,7 @@
               <a href="#" class="note__actions__a" @click.prevent="deleteNote(note.id)"><i class="fal fa-times"></i></a>
             </div>
             <div class="note__wrap">
-              <div class="note__text" contenteditable @keydown.enter.prevent="event => saveNote(event, note.id)" @blur.prevent="event => saveNote(event, note.id)">
+              <div class="note__text" contenteditable @keydown.enter.prevent="event => saveNote(event, note.id)">
                 {{note.text}}
               </div>
             </div>
@@ -25,7 +25,7 @@
     </template>
     <template v-else>
       <div class="sb__desc">
-        Notes are saved when unfocusing and pressing the Enter. 
+        The note will be save to press enter. 
       </div>
     </template>
   </div>
@@ -46,15 +46,18 @@
           this.notes.unshift({id: 0, text: ''});
 
           this.$nextTick(() => {
-            this.$refs.notes.firstChild.lastChild.firstChild.focus();
+            this.$refs.notes.children[0].lastChild.lastChild.focus();
           });
         }
       },
       deleteNote(note_id){
         if(note_id){
-          axios.post('/api/deletenote', { note_id: note_id }).then((r) => {
-            this.getNotes();
-          });
+          axios.post('/api/deletenote', { note_id: note_id })
+            .then((r) => {
+              console.log(r);
+              this.getNotes();
+            }
+          );
         }
         else {
           this.notes.splice(0, 1)
@@ -66,17 +69,16 @@
 
         if(noteText.length > 1){
           if(note_id){
-            if(this.notes[this.notes.map(el => el.id).indexOf(note_id)].text === noteText){
+            if(this.notes[this.notes.map(el => el.id).indexOf(note_id)].text === noteText)
               this.wait = false;
-              return;
-            }
-          }
-          else note_id = 0;
+          }else note_id = 0;
 
-          axios.post('/api/savenote', {id: note_id, text: noteText}).then((r) =>{
-            this.getNotes();
-            this.wait = false;
-          });
+          axios.post('/api/savenote', {id: note_id, text: noteText})
+            .then((r) =>{
+              this.getNotes();
+              this.wait = false;
+            }
+          );
         }
         else {
           if(note_id) this.deleteNote(note_id);
@@ -86,9 +88,11 @@
         }
       },
       getNotes(){
-        axios.get('/api/getnotes').then((r) => {
-          this.notes = r.data;
-        });
+        axios.get('/api/getnotes')
+          .then((r) => {
+            if(r.data) this.notes = r.data;
+          }
+        );
       }
     },
     mounted() {
