@@ -1,16 +1,18 @@
 <template ref="stat">
-  <div class="sb__stat">
+  <div class="sb__stat" v-if="total > 0">
     <div class="stat__count">
       <span class="stat__count__n">{{total}}</span>
-      <div class="stat__count__t">per month</div>
+      <div class="stat__count__t">last 30 days</div>
     </div>
-    <div class="sb__stat--diagram" v-if="total > 0">
+    <div class="sb__stat--diagram">
       <div class="sb__diagram__item" v-for="item in diagram" :style="{background: '#'+item.color,width: item.width+'%'}" :title="item.name +' '+item.width +'%'"></div>
     </div>
     <div class="sb__stat__bomb">
       <img class="sb__stat__bomb__img" :src="bomb" alt="">
     </div>
+    <!--<a class="btn btn--default mt-15" href="/stats"><i class="fa-light fa-chart-pie"></i>  Stats</a>-->
   </div>
+
 </template>
 
 <script>
@@ -18,7 +20,7 @@
 
   export default {
     props: {
-      updateTotal: Number
+      statsIsUpdate: Number
     },
     data () {
       return {
@@ -26,14 +28,22 @@
         oldTotal: '',
         bomb: '',
         countLoad: 0,
-        diagram: []
+        diagram: [],
+        popups: {
+          groupCreate: {
+            name: 'stats',
+            visibility: false,
+            title: 'Статистика',
+            desc: ''
+          }
+        },
       }
     },
     methods: {
-      statListUpdate(isbomb){
+      totalUpdate(isbomb){
         this.oldTotal = this.total;
 
-        axios.get('/api/statlistupdate')
+        axios.get('/totalupdate')
           .then((response) => {
             if(this.countLoad == 0 || !isbomb){
               this.countLoad++;
@@ -50,17 +60,17 @@
       }
     },
     watch: {
-      updateTotal: function (val) {
-        this.statListUpdate(true);
+      statsIsUpdate: function (val) {
+        this.totalUpdate(true);
       }
     },
     mounted() {
-      this.statListUpdate();
+      this.totalUpdate();
     }
   }
 </script>
 <style lang="scss">
-  @import '../../../sass/_variables.scss';
+  @import './resources/sass/_variables.scss';
 
   .sb__stat {
     position: relative;

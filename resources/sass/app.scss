@@ -11,7 +11,7 @@
 input, button, select, option {
   font-family: 'Neucha', cursive;
   font-weight: 300;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.5px;
   font-size: 18px;
   color: $black;
 
@@ -39,11 +39,15 @@ ul {
 a {
   line-height: 1;
 }
-
-
+.mt-15 {
+  margin-top: 15px;
+}
+.w-100 {
+  width: 100%;
+}
 body {
   font-family: 'Neucha', cursive;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.6px;
   font-size: 18px;
   color: $black;
   margin:0;
@@ -53,36 +57,40 @@ body {
   overflow: hidden;
 }
 .container--dashboard {
-  max-width: 1120px;
-  padding: 40px;
-  display: flex;
-  flex: 1;
+  max-width: 1140px;
+  padding: 40px 40px 0 40px;
+  min-height: 100vh;
+  box-sizing: border-box;
 }
 .container--auth {
   max-width: 350px;
   padding: 20px;
 }
 .main {
-  flex: 1;
-  order: 2;
-  margin: 0 35px;
   overflow: hidden;
+  position: relative;
+}
+.sb--l + .main {
+  margin-left: 235px;
+}
+.sb--r + .main {
+  margin-right: 235px;
 }
 .sb--l {
   width: 200px;
-  order: 1;
+  float: left;
+  position: fixed;
+  margin-right: 35px;
 }
 .sb--r {
-  width: 200px;
-  order: 3;
+  max-width: 200px;
+  float: right;
+  margin-left: 35px;
 }
 .sb {
   &>*:not(:last-child) {
     margin-bottom: 30px;
   }
-}
-.w-100 {
-  width: 100%;
 }
 .sb__block {
   position: relative;
@@ -282,15 +290,14 @@ text-align: center;
     box-sizing: border-box;
   }
 
-  /* стили при наведении курсора на радио */
+
   .checkboxes__input:not(:disabled):not(:checked) + .checkboxes__label:hover {
     opacity: 0.9;
   }
-  /* стили для активной радиокнопки (при нажатии на неё) */
   .checkboxes__inputo:not(:disabled):active + .checkboxes__label {
     opacity: 0.9;
   }
-  /* стили для радиокнопки, находящейся в состоянии checked */
+
   .checkboxes__input:checked + .checkboxes__label {
     border-color: $black;
   }
@@ -356,4 +363,96 @@ text-align: center;
 .auth__links {
   margin-top: 10px;
 
+}
+//CALENDAR MAIN STYLES
+.calendar {
+
+}
+.calendar__header {
+  position: relative;
+  margin-bottom: 10px;
+  min-height: 22px;
+}
+.calendar__header__value {
+  width: 100%;
+  text-align: center;
+}
+.calendar__actions {
+  position: absolute;
+  width: 100%;
+}
+.calendar__actions__arrow {
+  float:right;
+  cursor: pointer;
+}
+.calendar__actions__arrow:hover {
+  color: #000;
+}
+.calendar__actions__arrow:first-child {
+  float:left;
+}
+.calendar_actions__arrow--disable {
+  opacity: 0.5;
+}
+.calendar {
+  .calendar__tb {
+    width: 100%;
+  }
+  .calendar__row {
+    &:first-child th {
+      padding-bottom: 5px;
+    }
+  }
+}
+.calendar__tb__main {
+  margin-top: 10px;
+}
+.calendar__tb__head, .calendar__tb__main {
+  display: flex;
+  max-width: 100%;
+  flex-wrap: wrap;
+}
+.calendar__cell {
+  text-align: center;
+  box-sizing: border-box;
+  border-radius: 2px;
+  font-size: 16px;
+}
+.calendar__cell--sucess {
+  background: #c9ffbed4;
+}
+.calendar__cell--now {
+  background: $main;
+  
+  .calendar__cell__value {
+    //color: #fff;
+  }
+}
+
+.main__header {
+  background-color: $main;
+  padding: 12px 14px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  position: relative;
+  border-radius: 2px;
+}
+.main__header__title {
+  text-transform: uppercase;
+  float: left;
+  font-size: 16px;
+  letter-spacing: 2px;
+}
+.main__header__add {
+  position: absolute;
+  right: 14px;top:11px;
+  opacity: 0.2;
+
+  i {
+    font-size: 22px;
+    color: $black;
+  }
+}
+.main__header:hover .main__header__add {
+  opacity: 1;
 }

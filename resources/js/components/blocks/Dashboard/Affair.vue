@@ -28,10 +28,9 @@
     },
     methods: {
       changeCheckAffair(){
-        axios.post('/api/createorupdatecheck', {affair_id: this.id, date: this.date, status: this.selected}).then((r) => {
-          this.$parent.$parent.updateStat();
+        axios.post('/createorupdatecheck', {affair_id: this.id, date: this.date, status: this.selected}).then((r) => {
+          this.$parent.$parent.updateStats();
         }).catch((error) =>{
-          console.log(error);
           alert('АШИБКА')
         });
       }
@@ -40,7 +39,7 @@
 </script>
 
 <style lang="scss">
-  @import '../../../sass/_variables.scss';
+  @import './resources/sass/_variables.scss';
   .affair {
     &:hover .affair__actions__item{
       opacity: 0.2;
@@ -85,7 +84,11 @@
         opacity: 1;
       }
     }
+    .affair__actions__item--delete:hover .fal {
+      color: red;
+    }
   }
+  
   .affair--default {
     .affair__fake {
       width: 10px;

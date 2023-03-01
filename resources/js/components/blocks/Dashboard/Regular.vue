@@ -1,9 +1,9 @@
 <template>
   <div class="main__regular">
-    <div class="regular__header">
-      <div class="regular__header__title">Regular affairs</div>
-      <div class="regular__header__add">
-        <a href="#" class="affairs__header__add__a" @click.prevent="$refs.popupGroupCreate.popupShow();"><i class="fal fa-plus"></i></a>
+    <div class="main__header">
+      <div class="main__header__title">Regular affairs</div>
+      <div class="main__header__add">
+        <a href="#" class="main__header__add__a" @click.prevent="$refs.popupGroupCreate.popupShow();"><i class="fal fa-plus"></i></a>
       </div>
     </div>
     <ul class="regular__list" v-if="list.length != 0">
@@ -183,7 +183,7 @@
 <script>
   import axios from 'axios';
   import affair from './Affair.vue';
-  import popup from './Popup.vue';
+  import popup from '../Popup.vue';
 
 
   export default {
@@ -292,7 +292,7 @@
     },
     methods: {
       groupDelete(){
-        axios.post('/api/deletegroup', this.popups.groupEdit.form).then(() =>{
+        axios.post('/deletegroup', this.popups.groupEdit.form).then(() =>{
           this.$refs.popupGroupEdit.popupClose();
           this.getRegularList();
           this.popups.groupEdit.form.name = this.popups.groupEdit.form.color = '';
@@ -302,7 +302,7 @@
         });
       },
       groupEditSubmit(){
-        axios.post('/api/editgroup', this.popups.groupEdit.form).then(() =>{
+        axios.post('/editgroup', this.popups.groupEdit.form).then(() =>{
           this.$refs.popupGroupEdit.popupClose();
           this.getRegularList();
           this.popups.groupEdit.form.name = this.popups.groupEdit.form.color = '';
@@ -312,7 +312,7 @@
         });
       },
       groupCreateSubmit(){
-        axios.post('/api/creategroup', this.popups.groupCreate.form).then((r) =>{
+        axios.post('/creategroup', this.popups.groupCreate.form).then((r) =>{
           this.$refs.popupGroupCreate.popupClose();
           this.getRegularList();
           this.popups.groupCreate.form.name = this.popups.groupCreate.form.color = '';
@@ -322,7 +322,7 @@
         });
       },
       affairCreateSubmit(){
-        axios.post('/api/createaffair', this.popups.affairCreate.form).then((r) =>{
+        axios.post('/createaffair', this.popups.affairCreate.form).then((r) =>{
           this.$refs.popupAffairCreate.popupClose();
           this.getRegularList();
           this.popups.affairCreate.form.name = '';
@@ -333,7 +333,7 @@
         });
       },
       affairEditSubmit(){
-        axios.post('/api/editaffair', this.popups.affairEdit.form).then(() =>{
+        axios.post('/editaffair', this.popups.affairEdit.form).then(() =>{
           this.$refs.popupAffairEdit.popupClose();
           this.getRegularList();
           this.popups.affairEdit.form.name = this.popups.affairEdit.form.points = '';
@@ -344,7 +344,7 @@
         });
       },
       affairDelete(){
-        axios.post('/api/deleteaffair', this.popups.affairEdit.form).then(() =>{
+        axios.post('/deleteaffair', this.popups.affairEdit.form).then(() =>{
           this.$refs.popupAffairEdit.popupClose();
           this.getRegularList();
           this.popups.affairEdit.form.name = this.popups.affairEdit.form.points = '';
@@ -354,7 +354,7 @@
         });
       },
       getRegularList(){
-        axios.get('/api/getregular')
+        axios.get('/getregular')
           .then((response) => {
             this.list = response.data;
         });
@@ -366,35 +366,8 @@
   }
 </script>
 <style lang="scss" scoped>
-  @import '../../../sass/_variables.scss';
+  @import './resources/sass/_variables.scss';
 
-  .regular__header {
-    background-color: $main;
-    padding: 15px 20px;
-    overflow: hidden;
-    margin-bottom: 25px;
-    position: relative;
-
-    &:hover .regular__header__add {
-      opacity: 1;
-    }
-  }
-  .regular__header__title {
-    text-transform: uppercase;
-    float: left;
-    font-size: 16px;
-    letter-spacing: 2px;
-  }
-  .regular__header__add {
-    position: absolute;
-    right: 20px;top:14px;
-    opacity: 0.2;
-
-    i {
-      font-size: 22px;
-      color: $black;
-    }
-  }
   .regular__list {
     column-count: 2;
     margin-right: -5px;
@@ -408,7 +381,6 @@
     }
   }
   .group {
-
     overflow: hidden;
     position: relative;
 

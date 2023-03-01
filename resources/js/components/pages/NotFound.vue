@@ -6,6 +6,6 @@
 
 <script>
 export default {
-    name: 'NotFoundComponent'
+    name: 'NotFound'
 }
 </script>

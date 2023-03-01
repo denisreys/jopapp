@@ -35,17 +35,16 @@
         },
         methods: {
             formSubmit(){
-                axios.post('/api/register', this.form)
+                axios.post('/register', this.form)
                     .then(response => {
-                       /// if(response.data){
-                       //     localStorage.setItem('token', response.data.token);
-                       //     this.$router.push('/');
-                        //}else {
-                       //     this.error = response.data.message;
-                       // }
+                        if(response.data){
+                            localStorage.setItem('token', response.data.token);
+                            this.$router.push('/');
+                        }else this.error = response.data.message;
+                        
                     });
             } 
         },
-        name: 'RegisterComponent'
+        name: 'Register'
     }
 </script>

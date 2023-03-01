@@ -1,6 +1,9 @@
 <template>
-  <div class="popup" :class="('js-popup--' + target)" v-show="visibility">
+  <div class="popup" :class="('js-popup--' + target)" v-if="visibility">
     <div class="popup__window">
+      <!--<div class="popup__window__loading" v-show="!loaded">
+        <div class="popup__window__loading__circle">jopa</div>
+      </div>-->
       <div class="popup__header">
         <div class="popup__title">{{title}}</div>
         <div class="popup__close" @click="popupClose()"><i class="fal fa-times"></i></div>
@@ -27,7 +30,9 @@
   export default {
     data(){
       return {
-        visibility: false
+        visibility: false,
+        loaded: false,
+        jopa:1000
       }
     },
     props: {
@@ -42,7 +47,7 @@
       },
       popupClose(){
         this.visibility = false;
-      },
+      }
     }
   }
 </script>
@@ -68,6 +73,20 @@
     box-shadow: 0px 2px 18px #4d4b43;
     box-sizing: border-box;
     position: relative;
+  }
+  .popup__window__loading {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    vertical-align: middle;
+    background: #ffffff;
+    z-index: 5;
+  }
+  .popup__window__loading__circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
   }
   .popup__header {
     padding: 25px 30px;

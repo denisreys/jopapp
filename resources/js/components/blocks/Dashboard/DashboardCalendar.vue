@@ -1,11 +1,11 @@
 <template>
-  <div class="calendar">
+  <div class="calendar calendar--dashboard" v-if="calendar.data.month_name">
     <div class="calendar__header">
       <div class="calendar__actions">
         <div class="calendar__actions__arrow" :class="{'calendar_actions__arrow--disable' : !calendar.canISwitchLast}" @click="calendarSwitch('last')"><i class="fal fa-angle-left"></i></div>
         <div class="calendar__actions__arrow" :class="{'calendar_actions__arrow--disable' : !calendar.canISwitchNext}" @click="calendarSwitch('next')"><i class="fal fa-angle-right"></i></div>
       </div>
-      <div class="calendar__header__name">
+      <div class="calendar__header__value">
         {{calendar.data.month_name}}
         <template v-if="data.year != calendar.data.year">
           {{ calendar.data.year }}
@@ -15,22 +15,22 @@
     <div class="calendar__tb">
       <div class="calendar__tb__head">
         <div v-for="(heading, index) in headings" class="calendar__tb__head__cell calendar__cell" :class="{ 'calendar__weekend' : index > 4}">
-          <div class="calendar__number">{{heading}}</div>
+          <div class="calendar__cell__value">{{heading}}</div>
         </div>
       </div>
       <div class="calendar__tb__main">
-        <div class="calendar__np calendar__cell" v-if="calendar.data.offset > 0" v-for="index in calendar.data.offset" :key="index"></div>
+        <div class="calendar__cell" v-if="calendar.data.offset > 0" v-for="index in calendar.data.offset" :key="index"></div>
         <template v-for="day in calendar.data.days">
-          <div class="calendar__day calendar__cell" 
+          <div class="calendar__item calendar__cell" 
               :title="'Points: '+day.points" 
               :class="[
-                {'calendar__day--sucess' : day.points > 0 && day.day < data.today}, 
-                {'calendar__day--today' : this.calendar.data.year == data.year && 
+                {'calendar__cell--sucess' : day.points > 0}, 
+                {'calendar__cell--now' : this.calendar.data.year == data.year && 
                                           this.calendar.data.month == data.month && 
                                           day.day == data.today
                                         }
               ]">
-            <div class="calendar__number">{{day.day}}</div>
+            <div class="calendar__cell__value">{{day.day}}</div>
           </div>
         </template>
       </div>
@@ -55,11 +55,10 @@
     },
     methods: {
       calendarUpdate(){
-        axios.get('/api/getcalendar')
+        axios.get('/getdashboardcalendar')
         .then((response) => {
-          console.log(response);
           this.data = response.data;
-          this.calendar.data = this.data.calendar[this.data.year][this.data.month];
+          this.calendar.data = this.data.calendar[this.data.year]['months'][this.data.month];
           this.canISwitch();
         });
       },
@@ -89,7 +88,7 @@
           }
         }
 
-        this.calendar.data = this.data.calendar[newYear][newMonth];
+        this.calendar.data = this.data.calendar[newYear]['months'][newMonth];
         this.canISwitch();
       },
       canISwitch(){
@@ -118,10 +117,10 @@
         this.calendar.canISwitchLast = false;
 
         if(newNextYear in this.data.calendar)
-          if(newNextMonth in this.data.calendar[newNextYear])
+          if(newNextMonth in this.data.calendar[newNextYear]['months'])
             this.calendar.canISwitchNext = true;
         if(newLastYear in this.data.calendar)
-          if(newLastMonth in this.data.calendar[newLastYear])
+          if(newLastMonth in this.data.calendar[newLastYear]['months'])
             this.calendar.canISwitchLast = true;
       }
     },
@@ -131,82 +130,21 @@
   }
 </script>
 <style lang="scss">
-  @import '../../../sass/_variables.scss';
-  .calendar__header {
-    position: relative;
-    margin-bottom: 10px;
-  }
-  .calendar__header__name {
-    width: 100%;
-    text-align: center;
-  }
-  .calendar__actions {
-    position: absolute;
-    width: 100%;
-  }
-  .calendar__actions__arrow {
-    float:right;
-    cursor: pointer;
-  }
-  .calendar__actions__arrow:hover {
-    color: #000;
-  }
-  .calendar__actions__arrow:first-child {
-    float:left;
-  }
-  .calendar_actions__arrow--disable {
-    opacity: 0.5;
-  }
-  .calendar {
-    .calendar__tb {
-      width: 100%;
+  @import './resources/sass/_variables.scss';
+
+  .calendar--dashboard {
+    .calendar__tb__head {
+      border-radius: 2px;
+      background-color: $main;
     }
-    .calendar__row {
-      &:first-child th {
-        padding-bottom: 5px;
+    .calendar__cell {
+      width: calc(100% / 7);
+      padding: 4px;
+    }
+    .calendar__head {
+      .calendar__cell__value {
+        background-color: $main;
       }
     }
   }
-  .calendar__tb__head {
-    background-color: $main;
-  }
-  .calendar__tb__main {
-    margin-top: 5px;
-  }
-  .calendar__tb__head, .calendar__tb__main {
-    display: flex;
-    max-width: 100%;
-    flex-wrap: wrap;
-  }
-  .calendar__cell {
-    text-align: center;
-    width: calc(100% / 7);
-    padding: 2px 2px;
-    box-sizing: border-box;
-  }
-  .calendar__number {
-    line-height: 25px;
-  }
-  .calendar__day {
-    .calendar__number {
-      border-radius: 50%;
-    }
-  }
-  .calendar__head {
-    .calendar__number {
-      background-color: $main;
-      font-weight: normal;
-    }
-  }
-  .calendar__day--sucess {
-    .calendar__number {
-      background: #c9ffbed4;
-    }
-  }
-  .calendar__day--today {
-    .calendar__number {
-      background: $main;
-    }
-  }
-  
 </style>

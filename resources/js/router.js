@@ -1,40 +1,46 @@
 import { createWebHistory, createRouter } from 'vue-router';
-import DashboardComponent from './components/DashboardComponent.vue';
-import PostComponent from './components/PostComponent.vue';
-import LoginComponent from './components/auth/LoginComponent.vue';
-import RegisterComponent from './components/auth/RegisterComponent.vue';
-import NotFoundComponent from './components/NotFoundComponent.vue';
+import Dashboard from './components/pages/Dashboard.vue';
+import Stats from './components/pages/Stats.vue';
+import Login from './components/pages/Login.vue';
+import Register from './components/pages/Register.vue';
+import NotFound from './components/pages/NotFound.vue';
 
 const routes = [
     { 
         path: '/',
         name: 'dashboard',
-        component: DashboardComponent,
+        component: Dashboard,
         meta: {requiresAuth: true} 
     },
     { 
-        path: '/posts',
-        name: 'posts', 
-        component: PostComponent,
+        path: '/stats',
+        name: 'stats', 
+        component: Stats,
+        meta: {requiresAuth: true}
+    },
+    { 
+        path: '/settings',
+        name: 'settings', 
+        component: Stats,
         meta: {requiresAuth: true}
     },
     { 
         path: '/:pathMatch(.*)*', 
         name: 'notFound', 
-        component: NotFoundComponent,
+        component: NotFound,
         meta: {requiresAuth: false}
     },
     //AUTH
     { 
         path: '/login', 
         name: 'login', 
-        component: LoginComponent,
+        component: Login,
         meta: {requiresAuth: false}
     },
     { 
         path: '/register', 
         name: 'register', 
-        component: RegisterComponent,
+        component: Register,
         meta: {requiresAuth: false}
     }
 ];
@@ -45,12 +51,10 @@ const router = createRouter({
 });
 
 router.beforeEach((to,from) => {
-    if(to.meta.requiresAuth && !localStorage.getItem('token')){
-        return {name: 'Login'}
-    }
-    if(to.meta.requiresAuth == false && localStorage.getItem('token')){
-        return {name: 'Home'}
-    }
+    if(to.meta.requiresAuth && !localStorage.getItem('token'))
+        return {name: 'login'}
+    if(to.meta.requiresAuth == false && localStorage.getItem('token'))
+        return {name: 'dashboard'}
 });
 
 export default router;

@@ -33,7 +33,7 @@
         },
         methods: {
             formSubmit(){
-                axios.post('/api/login', this.form)
+                axios.post('/login', this.form)
                     .then(response => {
                         if(response.data.success){
                             localStorage.setItem('token', response.data.token);
@@ -44,6 +44,6 @@
                     });
             } 
         },
-        name: 'LoginComponent'
+        name: 'Login'
     }
 </script>

@@ -93,7 +93,7 @@
 <script>
   import axios from 'axios';
   import affair from './Affair.vue';
-  import popup from './Popup.vue';
+  import popup from '../Popup.vue';
 
   export default {
     components: {
@@ -158,7 +158,7 @@
         }
         else if(this.popups.addTodo.tabs.active == 2) data['id'] = this.popups.addTodo.form.selectedAffair.id;
 
-        axios.post('/api/addtodo', data).then((r) =>{
+        axios.post('/addtodo', data).then((r) =>{
           this.$refs.popupAddTodo.popupClose();
           this.getDiaryList();
           this.popups.addTodo.form.selectedAffair.id = this.popups.addTodo.form.selectedAffair.group_id = this.popups.addTodo.form.selectedAffair.points = this.popups.addTodo.form.group = this.popups.addTodo.form.newAffairName = '';
@@ -169,7 +169,7 @@
         });
       },
       getRegularList(){
-        axios.get('/api/getregular')
+        axios.get('/getregular')
           .then((responce) => {
             this.popups.addTodo.form.regularAffairs = responce.data;
         });
@@ -186,7 +186,7 @@
         });
       },
       getDiaryList(){
-        axios.get('/api/getdiary')
+        axios.get('/getdiary')
           .then((response) => {
             if(!this.week.length){
               this.week = response.data;
@@ -224,7 +224,7 @@
       },
       diaryDelete(todo_id){
         if(todo_id){
-          axios.post('/api/deletetodo', {id: todo_id}).then((r) =>{
+          axios.post('/deletetodo', {id: todo_id}).then((r) =>{
             this.getDiaryList();
           });
         }
@@ -236,10 +236,10 @@
   }
 </script>
 <style lang="scss">
-  @import '../../../sass/_variables.scss';
+  @import './resources/sass/_variables.scss';
 
   .diary {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     position: relative;
   }
   .diary__list {
@@ -277,10 +277,11 @@
     letter-spacing: 2.4px;
     text-transform: uppercase;
     background: $main;
+    border-radius: 2px;
   }
   .diary__table {
     display: flex;
-    padding: 2px 12px;
+    padding: 2px 14px;
     text-align: center;
     align-items: center;
     border-bottom: solid 2px $black;

@@ -92,7 +92,7 @@
 <script>
   import axios from 'axios';
   import affair from './Affair.vue';
-  import popup from './Popup.vue';
+  import popup from '../Popup.vue';
 
   export default {
     components: {
@@ -133,7 +133,7 @@
     },
     methods: {
       taskAddSubmit(){
-        axios.post('/api/addtask', this.popups.taskAdd.form).then((r) => {
+        axios.post('/addtask', this.popups.taskAdd.form).then((r) => {
           this.$refs.popupTaskAdd.popupClose();
           this.getTasks();
         }).catch((error) =>{
@@ -141,7 +141,7 @@
         });;
       },
       taskEditSubmit(){
-        axios.post('/api/edittask', this.popups.taskEdit.form).then((r) => {
+        axios.post('/edittask', this.popups.taskEdit.form).then((r) => {
           this.$refs.popupTaskEdit.popupClose();
           this.popups.taskEdit.form.id = this.popups.taskEdit.form.name = this.popups.taskEdit.form.points = '';
           this.popups.taskEdit.form.errors = [];
@@ -151,7 +151,7 @@
         });;
       },
       taskDelete(){
-        axios.post('/api/deletetask', this.popups.taskEdit.form).then((r) => {
+        axios.post('/deletetask', this.popups.taskEdit.form).then((r) => {
           this.$refs.popupTaskEdit.popupClose();
           this.popups.taskEdit.form.id = this.popups.taskEdit.form.name = this.popups.taskEdit.form.points = '';
           this.popups.taskEdit.form.errors = [];
@@ -161,7 +161,7 @@
         });;
       },
       getTasks(){
-        axios.get('/api/gettasks').then((r) => {
+        axios.get('/gettasks').then((r) => {
           this.tasks = r.data;
         });
       }

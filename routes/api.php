@@ -3,8 +3,6 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
-use App\Http\Controllers\API\RegisterController;
-use App\Http\Controllers\API\LoginController;
 use App\Http\Controllers\API\RegularController;
 use App\Http\Controllers\API\CheckController;
 use App\Http\Controllers\API\MainController;
@@ -27,17 +25,17 @@ use App\Http\Controllers\API\TaskController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login'])->name('login');
 
-Route::post('/creategroup', [RegularController::class, 'createGroup']);
-Route::post('/editgroup', [RegularController::class, 'editGroup']);
-Route::post('/deletegroup', [RegularController::class, 'deleteGroup']);
+Route::post('creategroup', [RegularController::class, 'createGroup']);
+Route::post('editgroup', [RegularController::class, 'editGroup']);
+Route::post('deletegroup', [RegularController::class, 'deleteGroup']);
 
-Route::get('/getregular', [RegularController::class, 'getRegular']);
-Route::post('/createaffair', [RegularController::class, 'createAffair']);
-Route::post('/editaffair', [RegularController::class, 'editAffair']);
-Route::post('/deleteaffair', [RegularController::class, 'deleteAffair']);
+Route::get('getregular', [RegularController::class, 'getRegular']);
+Route::post('createaffair', [RegularController::class, 'createAffair']);
+Route::post('editaffair', [RegularController::class, 'editAffair']);
+Route::post('deleteaffair', [RegularController::class, 'deleteAffair']);
 
 Route::post('createorupdatecheck', [CheckController::class, 'createOrUpdateCheck']);
 
@@ -49,8 +47,10 @@ Route::post('savenote', [NoteController::class, 'saveNote']);
 Route::post('deletenote', [NoteController::class, 'deleteNote']);
 Route::get('getnotes', [NoteController::class, 'getNotes']);
 
-Route::get('statlistupdate', [StatisticsController::class, 'statListUpdate']);
-Route::get('getcalendar', [MainController::class, 'getCalendar']);
+Route::get('totalupdate', [StatisticsController::class, 'totalUpdate']);
+Route::get('getdashboardcalendar', [StatisticsController::class, 'getDashboardCalendar']);
+
+Route::get('getstatistics', [StatisticsController::class, 'getStatistics']);
 
 Route::post('addtask', [TaskController::class, 'addTask']);
 Route::post('edittask', [TaskController::class, 'editTask']);

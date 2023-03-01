@@ -52,9 +52,8 @@
       },
       deleteNote(note_id){
         if(note_id){
-          axios.post('/api/deletenote', { note_id: note_id })
+          axios.post('/deletenote', { note_id: note_id })
             .then((r) => {
-              console.log(r);
               this.getNotes();
             }
           );
@@ -73,7 +72,7 @@
               this.wait = false;
           }else note_id = 0;
 
-          axios.post('/api/savenote', {id: note_id, text: noteText})
+          axios.post('/savenote', {id: note_id, text: noteText})
             .then((r) =>{
               this.getNotes();
               this.wait = false;
@@ -88,7 +87,7 @@
         }
       },
       getNotes(){
-        axios.get('/api/getnotes')
+        axios.get('/getnotes')
           .then((r) => {
             if(r.data) this.notes = r.data;
           }
@@ -101,7 +100,7 @@
   }
 </script>
 <style lang="scss">
-  @import '../../../sass/_variables.scss';
+  @import './resources/sass/_variables.scss';
 
   .note {
     &:hover {
@@ -143,10 +142,8 @@
     }
   }
   .note__actions__a {
-
-
     &:hover .fal {
-      color: $black;
+      color: red;
     }
   }
 </style>
