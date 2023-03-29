@@ -11,14 +11,14 @@ class NoteController extends Controller
 {
     public function getNotes(){
         $user_id = Auth::id();
+        $notes = Note::where('user_id', $user_id)->orderBy('id', 'DESC')->get();
 
-        if($user_id){
-            return Note::where('user_id', $user_id)->orderBy('id', 'DESC')->get();
-        }
+        if($notes) return $notes;
     }
     public function saveNote(Request $request){
+        $request = $request->all();
         $request['user_id'] = Auth::id();
-        $validator = Validator($request->all(), [
+        $validator = Validator($request, [
             'text' => 'min:1|max:100',
             'user_id' => 'required'
         ]);
@@ -29,12 +29,11 @@ class NoteController extends Controller
             ];
             return response()->json($response, 400);
         }
-
-        if($request['note_id']){
-            Note::where(['id' => $request['note_id'], 'user_id' => $request['user_id']])->update('text', $response['text']);
-        }else {
+        
+        if($request['id'])
+            Note::where(['id' => $request['id'], 'user_id' => $request['user_id']])->update(['text' => $request['text']]);
+        else 
             Note::create(['text' => $request['text'], 'user_id' => $request['user_id']]);
-        }
     }
     public function deleteNote(Request $request){
         $user_id = Auth::id();

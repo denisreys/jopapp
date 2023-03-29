@@ -11,56 +11,59 @@ use App\Models\User;
 class AuthController extends Controller
 {
     public function register(Request $request){
-        $validator = Validator($request->all(), [
-            'name' => 'required',
-            'email' => 'required|email',
-            'password' => 'required',
-            'c_password' => 'required|same:password'
-        ]);
+        $request = $request->all();
+
+        $validator = Validator($request, [
+            'login' => 'required|regex:/^[a-zA-Z0-9_]+$/u|min:2|max:20|unique:users,login',
+            'password' => 'required|min:2|max:100'
+        ],['login.regex' => 'Login must contain only latin letters, numbers and "_".'],);
+        
         if($validator->fails()) {
             $response = [
                 'success' => false,
-                'message' => $validator->errors()
+                'errors' => $validator->errors()
             ];
-            return response()->json($response, 400);
+            return response()->json($response, 200);
         }
 
-        $input = $request->all();
-        $input['password'] = bcrypt($input['password']); 
-        $user = User::create($input);
-
-        $success['token'] = $user->createToken('MyApp')->plainTextToken;
-        $success['name'] = $user->name;
-
-        $response = [
-            'success' => true,
-            'data' => $success,
-            'message' => 'User register is successly bitch'
-        ];
-        return response()->json($response,200);
+        $user = User::create(['login' => $request['login'], 'password' => bcrypt($request['password'])]);
+        
+        if(Auth::attempt(['login' => $request['login'], 'password'=> $request['password'] ], true)){
+            $response = [
+                'success' => true,
+                'token' => $user->createToken('jopapp')->plainTextToken
+            ];
+            return response()->json($response,200);
+        }
+        else {
+            $response = [
+                'success' => true,
+                'token' => false
+            ];
+            return response()->json($response,200);
+        }
     }
     public function login(Request $request){
         $validator = Validator($request->all(), [
-            'email' => 'required|email',
+            'login' => 'required|min:2|max:20',
             'password' => 'required' 
         ]);
-        if(Auth::attempt(['email' => $request->email,'password'=>$request->password])){
+        if(Auth::attempt(['login' => $request->login,'password'=>$request->password], true)){
             $user = Auth::user();
             
-            $success['token'] = $user->createToken('MyApp')->plainTextToken;
-            $success['name'] = $user->name;
+            $success['token'] = $user->createToken('jopapp')->plainTextToken;
+            $success['login'] = $user->login;
 
             $response = [
                 'success' => true,
-                'data' => $success,
-                'message' => 'User register is successly bitch'
+                'data' => $success
             ];
             return response()->json($response,200);
         }
         else {
             $response = [
                 'success' => false,
-                'message' => 'Error login'
+                'message' => 'Login or password are wrong'
             ];
             return response()->json($response,200);
         }

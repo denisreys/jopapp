@@ -20,7 +20,7 @@ class Affair extends Model
     ];
 
     public function check(){
-        return $this->hasOne(Check::class)->whereDay('date', Carbon::today());
+        return $this->hasOne(Check::class)->whereDate('date', Carbon::today());
     }
     public function checkToday(){
         return $this->hasOne(Check::class);

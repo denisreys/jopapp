@@ -1,5 +1,5 @@
 <template>
-  <div class="calendar calendar--statistic" v-if="data.month_name">
+  <div class="calendar calendar--statistic">
     <div class="calendar__header">
       <div class="calendar__actions">
         <div class="calendar__actions__arrow" :class="{'calendar_actions__arrow--disable' : !canISwitchYearLast}" @click="changeDate(selectedDate.year - 1, 0)"><i class="fal fa-angle-left"></i></div>
@@ -27,7 +27,6 @@
 </template>
 
 <script>
-  import axios from 'axios';
   
   export default {
     props: {
@@ -74,11 +73,14 @@
         if((this.selectedDate.year - 1) in this.data.calendar) 
           this.canISwitchYearLast = true;
         else 
-          this.canISwitchYearLast = false;
+          this.canISwitchYearLast = false;  
       }
     },
-    mounted(){
+    created(){
       this.canISwitchYear();
+    },
+    mounted(){
+      this.$root.loading.loaded++;
     }
   }
 </script>

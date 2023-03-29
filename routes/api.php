@@ -47,10 +47,10 @@ Route::post('savenote', [NoteController::class, 'saveNote']);
 Route::post('deletenote', [NoteController::class, 'deleteNote']);
 Route::get('getnotes', [NoteController::class, 'getNotes']);
 
-Route::get('totalupdate', [StatisticsController::class, 'totalUpdate']);
+Route::get('getdashboardstats', [StatisticsController::class, 'getDashboardStats']);
 Route::get('getdashboardcalendar', [StatisticsController::class, 'getDashboardCalendar']);
 
-Route::get('getstatistics', [StatisticsController::class, 'getStatistics']);
+Route::post('getstatistics', [StatisticsController::class, 'getStatistics']);
 
 Route::post('addtask', [TaskController::class, 'addTask']);
 Route::post('edittask', [TaskController::class, 'editTask']);

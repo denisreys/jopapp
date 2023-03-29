@@ -114,6 +114,7 @@ class RegularController extends Controller
         $validator = Validator($array, [
             'id' => 'required',
             'name' => 'required|min:1|max:50',
+            'group_id' => 'required',
             'points' => 'required|numeric|between:1,5',
             'user_id' => 'required'
         ]);
@@ -126,11 +127,12 @@ class RegularController extends Controller
         }
 
         Affair::where([
-            'id' => $array['id'],
-            'user_id' => $array['user_id']
-        ])->update([
-            'name' => $array['name'],
-            'points' => $array['points'],
+                'id' => $array['id'],
+                'user_id' => $array['user_id']
+            ])->update([
+                'name' => $array['name'],
+                'group_id' => $array['group_id'],
+                'points' => $array['points'],
         ]);
     }
     public function deleteAffair(Request $request) {

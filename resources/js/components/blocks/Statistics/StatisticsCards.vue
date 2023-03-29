@@ -80,22 +80,6 @@
       selectedData: Object,
       fullData: Object
     },
-    data () {
-      return {
-        cards: {
-          points: 0,
-          done: 0,
-          diaries: 0,
-          diary_checks: 0
-        },
-        lastDateCards: {
-          points: 0,
-          done: 0,
-          diaries: 0,
-          diary_checks: 0
-        }
-      }
-    },
     methods: {
       dynamicInPercent(firstValue, secondValue){
         var response = 0;
@@ -109,7 +93,7 @@
       },
       getCardsInfo(array){
         var response = {
-          points: array.points,
+          points: 0,
           diaries: 0,
           diary_checks: 0,
           done: 0
@@ -124,6 +108,7 @@
           });
         }
         else if(array.days){
+          response.points = array.points;
           Object.entries(array.days).forEach(([key, day]) => {
               if(day.diaries) response['diaries'] += day.diaries.length;
               if(day.diary_checks) response['diary_checks'] += day.diary_checks.length;
@@ -137,34 +122,43 @@
       }
     },
     computed: {
-      cards: function () {
+      cards() {
+        
         return this.getCardsInfo(this.selectedData);
       },
-      lastDateCards: function () {
-        var lastData = [];
-        
-        if(this.selectedData.months){
-          var lastYear = this.selectedData.months[1].year - 1;
+      lastDateCards() {
+        var response = {
+              points: 0,
+              diaries: 0,
+              diary_checks: 0,
+              done: 0
+            },
+            lastDate = {year: this.selectedData.year, month: 0};
 
-          if(this.fullData.calendar[lastYear])
-            lastData = this.fullData.calendar[lastYear];
+        if(this.selectedData.months){
+          lastDate.year = (this.selectedData.year - 1);
+
+          if(this.fullData.calendar[lastDate.year])
+            response = this.fullData.calendar[lastDate.year];
         }
         else if(this.selectedData.days){
-          var lastMonth = this.selectedData.month - 1,
-              thisYear = this.selectedData.year;
-
-          if(lastMonth == 0){
-            var lastYear = thisYear - 1;
-            lastMonth = 12;
-            
-            if(this.fullData.calendar[lastYear])
-              lastData = this.fullData.calendar[lastYear].months[lastMonth];
+          lastDate.month = (this.selectedData.month - 1);
+          
+          if(lastDate.month == 0){
+            lastDate.year--;
+            lastDate.month = 12;
           }
-          else lastData = this.fullData.calendar[thisYear]['months'][lastMonth];
+          
+          if(lastDate.year in this.fullData.calendar)
+            if(lastDate.month in this.fullData.calendar[lastDate.year])
+              response = this.fullData.calendar[lastDate.year].months[lastDate.month];
         }
 
-        return this.getCardsInfo(lastData);
+        return this.getCardsInfo(response);
       }
+    },
+    mounted(){
+      this.$root.loading.loaded++;
     }
   }
 </script>

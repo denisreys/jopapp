@@ -9,6 +9,7 @@
       </a>
     </div>
     <template v-if="notes.length != 0">
+      <input type="text" id="focusout" style="opacity:0">
       <ul class="sb__list" ref="notes">
           <li class="sb__list__item note" v-for="note in notes" :key="note.id">
             <div class="note__icon">-</div>
@@ -25,7 +26,7 @@
     </template>
     <template v-else>
       <div class="sb__desc">
-        The note will be save to press enter. 
+        Press enter for save. 
       </div>
     </template>
   </div>
@@ -71,9 +72,10 @@
             if(this.notes[this.notes.map(el => el.id).indexOf(note_id)].text === noteText)
               this.wait = false;
           }else note_id = 0;
-
+          
           axios.post('/savenote', {id: note_id, text: noteText})
             .then((r) =>{
+              document.querySelector('#focusout').focus();
               this.getNotes();
               this.wait = false;
             }
@@ -89,19 +91,23 @@
       getNotes(){
         axios.get('/getnotes')
           .then((r) => {
-            if(r.data) this.notes = r.data;
+            this.$root.loading.loaded++;
+            this.notes = r.data;
           }
         );
       }
     },
-    mounted() {
+    created() {
       this.getNotes();
     }
   }
 </script>
 <style lang="scss">
   @import './resources/sass/_variables.scss';
-
+  #focusout {
+    opacity: 0;
+    position: absolute;
+  }
   .note {
     &:hover {
       .note__actions {

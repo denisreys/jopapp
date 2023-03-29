@@ -54,7 +54,7 @@ router.beforeEach((to,from) => {
     if(to.meta.requiresAuth && !localStorage.getItem('token'))
         return {name: 'login'}
     if(to.meta.requiresAuth == false && localStorage.getItem('token'))
-        return {name: 'dashboard'}
+       return {name: 'dashboard'}   
 });
 
 export default router;

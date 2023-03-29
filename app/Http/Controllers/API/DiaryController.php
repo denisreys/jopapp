@@ -10,41 +10,44 @@ use App\Models\Diary;
 use App\Models\Group;
 use Illuminate\Support\Facades\Auth;
 
+
 class DiaryController extends Controller
 {
+    
     public function getDiary(){
         $user_id = Auth::id();
         $week = [];
 
-        $todoes = Diary::with('affair.checks')->whereHas('affair', function($q) use($user_id){
+        $diaries = Diary::with('affair.checks')->whereHas('affair', function($q) use($user_id){
             $q->where('user_id', $user_id);
-        })->whereBetween('date', [Carbon::today(), Carbon::today()->addDays(7)])->get();
-
+        })->whereBetween('date', [Carbon::today(), Carbon::today()->addDays(7)])->get()->toArray();
+        
         for($i = 0; $i < 7;){
             $day = Carbon::today()->addDays($i);
             $week[$i]['date'] = date_format($day,'Y-m-d H:i:s');
+            $week[$i]['ymd'] = date_format($day,'Ymd');
             $week[$i]['day'] = date_format($day, 'j');
             $week[$i]['day_name'] = date_format($day, 'l');
             $week[$i]['month_name'] = date_format($day, 'F');
             $week[$i]['month_name_short'] = date_format($day, 'M');
             $week[$i]['todoes'] = [];
 
-            foreach($todoes as $todo){
-
-                $todoDateYmd = date_format(date_create($todo['date']), 'Ymd');
-                $dayDateYmd = date_format($day, 'Ymd');
-
-                if($todo['affair']['checks']){
-                    foreach($todo['affair']['checks'] as $check){
-                        if(date_format(date_create($check['date']), 'Ymd') === $todoDateYmd){
-                            $todo['affair']['check'] = $check;
-                            break;
+            foreach($diaries as $key => $diary){
+                $diaryDateYmd = date_format(date_create($diary['date']), 'Ymd');
+                
+                if($diaryDateYmd === $week[$i]['ymd']) {
+                    if($diary['affair']['checks']){
+                        foreach($diary['affair']['checks'] as $check){
+                            $checkDateYmd = date_format(date_create($check['date']), 'Ymd');
+                            
+                            if($checkDateYmd === $week[$i]['ymd']){
+                                $diary['affair']['check'] = $check;
+                                break;
+                            }
                         }
+                        unset($diary['affair']['checks']);
                     }
-                    unset($todo['affair']['checks']);
-                }
-                if($todoDateYmd === $dayDateYmd){
-                    array_push($week[$i]['todoes'], $todo);
+                    array_push($week[$i]['todoes'], $diary);
                 }
             }
 

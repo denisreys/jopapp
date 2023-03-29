@@ -1,7 +1,7 @@
 <template>
   <ul class="nav">
     <li class="nav__item">
-      <router-link :to="{ name: 'dashboard' }" class="nav__item__link">
+      <router-link :to="{ name: 'dashboard' }"  class="nav__item__link">
         <i class="fa-light fa-house"></i> Dashboard
       </router-link>
     </li>
@@ -11,11 +11,11 @@
         Stats
       </router-link>
     </li>
-    <li class="nav__item">
-      <router-link :to="{ name: 'settings' }" class="nav__item__link">
+    <!--<li class="nav__item">
+      <router-link :to="{ name: 'settings' }" @click="loading()" class="nav__item__link">
         <i class="fa-light fa-gear"></i> Settings
       </router-link>
-    </li>
+    </li>-->
     <li class="nav__item">
       <a href="#" @click.prevent='logout' class="nav__item__link">
         <i class="fa-light fa-right-from-bracket"></i> Logout
@@ -62,7 +62,7 @@
     .router-link-active {
       border-left: solid 4px $main;
       margin-left: -4px;
-      background: #FFF8E3;
+      background: $main-light;
     }
   }
 </style>

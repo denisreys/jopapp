@@ -128,7 +128,8 @@
               errors: []
             }
           },
-        }
+        },
+        loaded: false
       }
     },
     methods: {
@@ -138,7 +139,7 @@
           this.getTasks();
         }).catch((error) =>{
           this.popups.taskAdd.form.errors = error.response.data.errors;
-        });;
+        });
       },
       taskEditSubmit(){
         axios.post('/edittask', this.popups.taskEdit.form).then((r) => {
@@ -162,11 +163,12 @@
       },
       getTasks(){
         axios.get('/gettasks').then((r) => {
+          this.$root.loading.loaded++;
           this.tasks = r.data;
         });
       }
     },
-    mounted() {
+    created() {
       this.getTasks();
     }
   }

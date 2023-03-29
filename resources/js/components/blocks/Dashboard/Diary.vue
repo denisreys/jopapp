@@ -188,6 +188,7 @@
       getDiaryList(){
         axios.get('/getdiary')
           .then((response) => {
+            this.$root.loading.loaded++;
             if(!this.week.length){
               this.week = response.data;
               this.$nextTick(() => {
@@ -204,7 +205,7 @@
       },
       showDiary(){
         this.height = '100%';
-        this.showWeek = 'Few days ';
+        this.showWeek = 'Show 4 days ';
       },
       hideDiary(){
         this.height = (this.$refs.diary.children[0].clientHeight + this.$refs.diary.children[2].clientHeight + 20) + 'px';
@@ -230,7 +231,7 @@
         }
       }
     },
-    mounted(){
+    created(){
       this.getDiaryList();
     }
   }
@@ -239,7 +240,7 @@
   @import './resources/sass/_variables.scss';
 
   .diary {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     position: relative;
   }
   .diary__list {
@@ -250,13 +251,13 @@
   }
   .diary__show {
     width: 100%;
-    margin-top: 10px;
+    margin-top: 15px;
     text-align: center;
   }
   .diary__show__a {
     color: $black;
-
-    padding: 5px 10px;
+    font-size: 16px;
+    padding: 4px 10px;
     display: block;
   }
   .diary__show__a:hover {
@@ -305,4 +306,5 @@
     padding-top: 15px;
     padding-left: 10px;
   }
+  
 </style>

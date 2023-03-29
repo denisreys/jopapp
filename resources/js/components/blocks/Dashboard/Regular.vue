@@ -32,7 +32,7 @@
             <div class="group__t">{{group.name}}</div>
           </div>
         </div>
-        <div class="group__list" v-if="group.affairs">
+        <div class="group__list" v-if="group.affairs.length">
           <affair
             v-for="item in group.affairs"
             :key="item.id"
@@ -45,6 +45,7 @@
                 <a href="#" class="affair__actions__item affair__actions__item--edit" @click.prevent="
                   $refs.popupAffairEdit.popupShow();
                   popups.affairEdit.form.id = item.id;
+                  popups.affairEdit.form.group_id = item.group_id;
                   popups.affairEdit.form.name = item.name;
                   popups.affairEdit.form.points = item.points;
                 "><i class="fal fa-pencil"></i></a>
@@ -139,15 +140,23 @@
       <div class="input-group">
         <input type="text" ref="affairCreate" class="input w-100" placeholder="Чем займешься?" v-model="popups.affairCreate.form.name">
       </div>
-      <div class="input-group">
-        <label for="popup-affair-points" class="label label--default">Difficult</label>
-        <select id="popup-affair-points" class="select" v-model="popups.affairCreate.form.points">
-          <option value="1">Очень легко</option>
-          <option value="2">Легко</option>
-          <option value="3">Нормально</option>
-          <option value="4">Сложно</option>
-          <option value="5">Очень сложно</option>
-        </select>
+      <div class="input-group input-group--inline">
+        <div class="input-group__item">
+          <label for="popup-affair-points" class="label label--default">Difficult</label>
+          <select id="popup-affair-points" class="select" v-model="popups.affairCreate.form.points">
+            <option value="1">Очень легко</option>
+            <option value="2">Легко</option>
+            <option value="3">Нормально</option>
+            <option value="4">Сложно</option>
+            <option value="5">Очень сложно</option>
+          </select>
+        </div>
+        <div class="input-group__item">
+          <label for="popup-affair-group" class="label label--default">Group</label>
+          <select id="popup-affair-group" class="select" v-model="popups.affairCreate.form.group_id">
+            <option v-for="group in list" :value="group.id">{{ group.name }}</option>
+          </select>
+        </div>
       </div>
     </v-popup>
 
@@ -163,15 +172,23 @@
       <div class="input-group">
         <input type="text" ref="affairEdit" class="input w-100" placeholder="Чем займешься?" v-model="popups.affairEdit.form.name">
       </div>
-      <div class="input-group">
-        <label for="popup-affair-points" class="label label--default">Difficult</label>
-        <select id="popup-affair-points" class="select" v-model="popups.affairEdit.form.points">
-          <option value="1">Очень легко</option>
-          <option value="2">Легко</option>
-          <option value="3">Нормально</option>
-          <option value="4">Сложно</option>
-          <option value="5">Очень сложно</option>
-        </select>
+      <div class="input-group input-group--inline">
+        <div class="input-group__item">
+          <label for="popup-affair-points" class="label label--default">Difficult</label>
+          <select id="popup-affair-points" class="select" v-model="popups.affairEdit.form.points">
+            <option value="1">Очень легко</option>
+            <option value="2">Легко</option>
+            <option value="3">Нормально</option>
+            <option value="4">Сложно</option>
+            <option value="5">Очень сложно</option>
+          </select>
+        </div>
+        <div class="input-group__item">
+          <label for="popup-affair-group" class="label label--default">Group</label>
+          <select id="popup-affair-group" class="select" v-model="popups.affairEdit.form.group_id">
+            <option v-for="group in list" :value="group.id">{{ group.name }}</option>
+          </select>
+        </div>
       </div>
       <template v-slot:additional>
         <a href="#" @click.prevent="affairDelete()" class="popup__footer__additional__delete">Удалить</a>
@@ -184,7 +201,6 @@
   import axios from 'axios';
   import affair from './Affair.vue';
   import popup from '../Popup.vue';
-
 
   export default {
     components: {
@@ -243,6 +259,7 @@
             btnSubmitName: 'Сохранить',
             form: {
               id: '',
+              group_id: '',
               name: '',
               points: '',
               errors: []
@@ -356,11 +373,12 @@
       getRegularList(){
         axios.get('/getregular')
           .then((response) => {
+            this.$root.loading.loaded++;
             this.list = response.data;
         });
       },
     },
-    mounted() {
+    created(){
       this.getRegularList();
     }
   }

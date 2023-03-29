@@ -1,5 +1,5 @@
 <template>
-  <div class="calendar calendar--dashboard" v-if="calendar.data.month_name">
+  <div class="calendar calendar--dashboard" >
     <div class="calendar__header">
       <div class="calendar__actions">
         <div class="calendar__actions__arrow" :class="{'calendar_actions__arrow--disable' : !calendar.canISwitchLast}" @click="calendarSwitch('last')"><i class="fal fa-angle-left"></i></div>
@@ -55,8 +55,9 @@
     },
     methods: {
       calendarUpdate(){
-        axios.get('/getdashboardcalendar')
+        axios.post('/getstatistics', {page: 'dashboard'})
         .then((response) => {
+          this.$root.loading.loaded++;
           this.data = response.data;
           this.calendar.data = this.data.calendar[this.data.year]['months'][this.data.month];
           this.canISwitch();
@@ -124,7 +125,7 @@
             this.calendar.canISwitchLast = true;
       }
     },
-    mounted() {
+    created() {
       this.calendarUpdate();
     }
   }
