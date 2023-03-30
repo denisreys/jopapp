@@ -59,7 +59,7 @@ import loader from '../blocks/Loader.vue';
                     month: Number,
                     year: Number
                 },
-                components: 4,
+                components: 5,
             }
         },
         methods: {

@@ -2,7 +2,7 @@
     <div class="container container--auth">
         <div class="auth">
             <div class="auth__header">
-                <img class="auth__header__img" src="/images/dog.png" alt="good dog">
+                <img class="auth__header__img" src="/images/dog2.png" alt="good dog">
                 <ul v-if="error" class="auth__errors">
                     <li class="auth__errors__item">{{ error }}</li>
                 </ul>
@@ -30,7 +30,8 @@
                     login: '',
                     password: ''
                 },
-                error: ''  
+                error: '',
+                components: 0
             }
         },
         methods: {
@@ -46,6 +47,12 @@
                 });
             } 
         },
+        created(){
+            this.$root.loading.components = this.components;
+        },
         name: 'Login'
     }
 </script>
+<style lang="scss">
+    
+</style>

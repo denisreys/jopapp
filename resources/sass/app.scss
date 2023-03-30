@@ -270,10 +270,9 @@ text-align: center;
   background: #fff;
 }
 .btn--submit {
-  border: 1px solid #e3d3aa;
+  border: 1px solid $main;
   background-color: $main;
 }
-
 .checkboxes {
   float: left;
 
@@ -299,8 +298,6 @@ text-align: center;
     border: solid 2px transparent;
     box-sizing: border-box;
   }
-
-
   .checkboxes__input:not(:disabled):not(:checked) + .checkboxes__label:hover {
     opacity: 0.9;
   }
@@ -322,22 +319,18 @@ text-align: center;
   .fal {
     font-size: 24px;
   }
-  /* стили при наведении курсора на радио */
   .checkboxes__input:not(:disabled):not(:checked) + .checkboxes__label:hover {
     opacity: 0.6;
   }
-  /* стили для активной радиокнопки (при нажатии на неё) */
   .checkboxes__inputo:not(:disabled):active + .checkboxes__label {
     opacity: 0.8;
   }
-  /* стили для радиокнопки, находящейся в состоянии checked */
   .checkboxes__input:checked + .checkboxes__label {
     opacity: 1;
   }
 }
 .tabs {
   overflow: hidden;
-
 }
 .tabs--popup {
   margin-bottom: 20px;
@@ -364,10 +357,11 @@ text-align: center;
 }
 .auth__header {
   margin-bottom: 10px;
+  text-align: center;
 }
 .auth__header__img {
   box-sizing: border-box;
-  max-width: 100%;
+  height: 200px;
   padding: 20px 60px;
 }
 .auth__links {

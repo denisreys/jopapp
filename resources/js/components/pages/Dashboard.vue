@@ -33,7 +33,6 @@
       },
       data(){
         return {
-          user: null,
           statsIsUpdate: 0,
           components: 6,
         }

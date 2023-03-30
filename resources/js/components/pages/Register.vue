@@ -34,7 +34,8 @@
                     login: '',
                     password: ''
                 },
-                errors: [] 
+                errors: [],
+                components: 0
             }
         },
         methods: {
@@ -57,6 +58,9 @@
                 });
             } 
         },
+        created(){
+            this.$root.loading.components = this.components;
+        },
         name: 'Register'
     }
 </script>
@@ -66,6 +70,6 @@
     .auth__info {
         margin-top: 25px;
         color: $light-gray;
-        font-size: 16px;
+        font-size: 14px;
     }
 </style>

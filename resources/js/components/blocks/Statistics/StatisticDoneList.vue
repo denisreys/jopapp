@@ -3,12 +3,12 @@
     <div class="sb__block__title">
       <span class="sb__block__title__span">Done</span>
     </div>
-    <template v-if="doneList">
+    <template v-if="doneList.length">
       <div class="sb__list sb__list--donelist">
         <div class="sb__list__item" v-for="(item, index) in doneList">
           <div class="donelist__name">{{ item.list[0].affair.name }}</div>
-            <div class="donelist__button" @click="toggleList(index, item)" >
-              <i class="fa-sharp fa-light fa-chevron-down"></i>
+            <div class="donelist__button" @click="toggleList(index)" >
+              <i class="fa-sharp fa-light " :class="index !== showList ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
             </div>
             <div class="donelist__list" v-if="index === showList">
               <div class="donelist__list__item" v-for="check in item.list">
@@ -20,7 +20,7 @@
     </template>
     <template v-else>
       <div class="sb__desc">
-        Nothing yet
+        Nothing
       </div>
     </template>
   </div>
@@ -38,7 +38,7 @@
       }
     },
     methods: {
-      toggleList(index, item){
+      toggleList(index){
         if(index === this.showList) this.showList = false
         else this.showList = index;
       },
@@ -46,9 +46,8 @@
         Object.entries(array).forEach(([key, day]) => {
           if(day.checks){
             Object.entries(day.checks).forEach(([key, check]) => {
-              if(check.affair.id in response){
+              if(check.affair.id in response)
                 response[check.affair_id].push(check);
-              }
               else {
                 response[check.affair_id] = [];
                 response[check.affair_id].push(check);
@@ -81,12 +80,9 @@
           response[arrayIndex].list = item;
           arrayIndex++;
         });
-        console.log(response);
+
         return response;
       }
-    },
-    created(){
-      
     },
     mounted(){
       this.$root.loading.loaded++;
@@ -97,17 +93,17 @@
   @import './resources/sass/_variables.scss';
 
   .donelist__name{
-    margin-right: 15px;
+    margin-right: 10px;
   }
   .donelist__button {
     position: absolute;
-    right: -10px;
+    right: -12px;
     top:0;
     width: 20px;
     cursor: pointer;
 
     i {
-      font-size: 14px;
+      font-size: 12px;
     }
   }
   .donelist__list {
