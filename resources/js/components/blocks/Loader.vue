@@ -101,7 +101,6 @@
         color: $light-gray;
     }
     .loader__icon {
-        //margin: auto 15px auto 0;
         margin-right: 15px;
 
         i {
@@ -120,7 +119,7 @@
     }
     .loader__loading__progress {
         border-radius: 5px;
-        background-color: #9ef3a0;
+        background-color: $main;
         height: 100%;
         width: 0%;
         transition: width 0.8s;

@@ -32,10 +32,6 @@
             </div>
         </div>
     </div>
-    <loader 
-      v-if="components > loaded"
-      :loading="{components: components, loaded: loaded}" 
-    />
 </template>
 <script>
 import axios from 'axios';
@@ -48,9 +44,6 @@ import doneList from '../blocks/Statistics/StatisticDoneList.vue';
 import loader from '../blocks/Loader.vue';
 
     export default {
-        props: {
-            loaded: Number
-        },
         data() {
             return {
                 data: [],

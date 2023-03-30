@@ -1,11 +1,22 @@
-<template ref="stat">
+<template ref="shortstats">
   <div class="sb__stat">
     <div class="stat__count">
       <span class="stat__count__n">{{total}}</span>
       <div class="stat__count__t">last 30 days</div>
     </div>
-    <div class="sb__stat--diagram" v-if="total > 0">
-      <div class="sb__diagram__item" v-for="item in diagram" :style="{background: '#'+item.color,width: item.width+'%'}" :title="item.name +' '+item.width +'%'"></div>
+    <div class="sb__stat--diagram" >
+      <template v-if="total > 0">
+        <div class="sb__diagram__item" 
+          v-for="item in diagram" 
+          :style="{background: '#'+item.color,width: item.width+'%'}" 
+          :title="item.name +' '+item.width +'%'">
+        </div>
+      </template>
+      <template v-else>
+        <div class="sb__diagram__item sb__diagram__item--nothing" 
+          title="Nothing">
+        </div>
+      </template>
     </div>
     <div class="sb__stat__bomb">
       <img class="sb__stat__bomb__img" :src="bomb" alt="">
@@ -108,5 +119,9 @@
     &:first-child {
       border-left: none;
     }
+  }
+  .sb__diagram__item--nothing {
+    background-color: $main-light;
+    width: 100%;
   }
 </style>

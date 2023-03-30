@@ -5,7 +5,7 @@
         <notes/>
       </div>
       <div class="sb sb--l">
-        <stats :statsIsUpdate="statsIsUpdate"/>
+        <shortstats :statsIsUpdate="statsIsUpdate"/>
         <calendar />
         <navigation/>
       </div>
@@ -17,7 +17,7 @@
   </template>
 <script>
     import calendar from '../blocks/Dashboard/DashboardCalendar.vue';
-    import stats from '../blocks/Dashboard/Stats.vue';
+    import shortstats from '../blocks/Dashboard/ShortStats.vue';
     import tasks from '../blocks/Dashboard/Tasks.vue';
     import regular from '../blocks/Dashboard/Regular.vue';
     import notes from '../blocks/Dashboard/Notes.vue';
@@ -25,11 +25,8 @@
     import navigation from '../blocks/Navigation.vue';
 
     export default {
-      props: {
-        loaded: Number
-      },
       components: {
-        calendar, stats, tasks, regular, notes, diary, navigation
+        calendar, shortstats, tasks, regular, notes, diary, navigation
       },
       data(){
         return {
