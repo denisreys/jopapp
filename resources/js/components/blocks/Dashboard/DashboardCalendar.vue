@@ -147,5 +147,8 @@
         background-color: $main;
       }
     }
+    .calendar__tb__main {
+      margin-top: 5px;
+    }
   }
 </style>

@@ -108,5 +108,8 @@
       background-color: $main;
       color: $black;
     }
+    .calendar__tb__main {
+      margin-top: 10px;
+    }
   }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="main__regular">
     <div class="main__header">
-      <div class="main__header__title">Regular affairs</div>
+      <div class="main__header__title">Groups and Regular tasks</div>
       <div class="main__header__add">
         <a href="#" class="main__header__add__a" @click.prevent="$refs.popupGroupCreate.popupShow();"><i class="fal fa-plus"></i></a>
       </div>

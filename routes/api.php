@@ -9,7 +9,7 @@ use App\Http\Controllers\API\MainController;
 use App\Http\Controllers\API\StatisticsController;
 use App\Http\Controllers\API\DiaryController;
 use App\Http\Controllers\API\NoteController;
-use App\Http\Controllers\API\TaskController;
+use App\Http\Controllers\API\TargetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,7 +52,7 @@ Route::get('getdashboardcalendar', [StatisticsController::class, 'getDashboardCa
 
 Route::post('getstatistics', [StatisticsController::class, 'getStatistics']);
 
-Route::post('addtask', [TaskController::class, 'addTask']);
-Route::post('edittask', [TaskController::class, 'editTask']);
-Route::post('deletetask', [TaskController::class, 'deleteTask']);
-Route::get('gettasks', [TaskController::class, 'getTasks']);
+Route::post('addtarget', [TargetController::class, 'addTarget']);
+Route::post('edittarget', [TargetController::class, 'editTarget']);
+Route::post('deletetarget', [TargetController::class, 'deleteTarget']);
+Route::get('gettargets', [TargetController::class, 'getTargets']);

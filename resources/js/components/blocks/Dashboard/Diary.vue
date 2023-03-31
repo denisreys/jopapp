@@ -264,7 +264,7 @@
     text-decoration: underline;
   }
   .diary__item {
-    flex-basis: calc(50% - 12px);
+    flex-basis: calc(50% - 10px);
     margin-bottom: 20px;
 
     &:last-child {
@@ -306,5 +306,4 @@
     padding-top: 15px;
     padding-left: 10px;
   }
-  
 </style>

@@ -101,7 +101,7 @@ body {
   border: solid 2px $black;
   border-radius: 2px;
 }
-.sb__block.sb__block--tasks, .sb__block.sb__block--notes {
+.sb__block.sb__block--targets, .sb__block.sb__block--notes {
   &:hover {
     .sb__block__title {
       opacity: 0;
@@ -410,9 +410,6 @@ text-align: center;
       padding-bottom: 5px;
     }
   }
-}
-.calendar__tb__main {
-  margin-top: 10px;
 }
 .calendar__tb__head, .calendar__tb__main {
   display: flex;

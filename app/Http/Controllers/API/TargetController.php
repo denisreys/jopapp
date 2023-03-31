@@ -7,9 +7,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Affair;
 
-class TaskController extends Controller
+class TargetController extends Controller
 {
-    public function getTasks(){
+    public function getTargets(){
         $user_id = Auth::id();
 
         if($user_id){
@@ -21,7 +21,7 @@ class TaskController extends Controller
             return response()->json($jopa, 200);            
         }
     }
-    public function addTask(Request $request){
+    public function addTarget(Request $request){
         $array = $request->all();
         $array['user_id'] = Auth::id();
         $array['state'] = 3;
@@ -41,7 +41,7 @@ class TaskController extends Controller
 
         Affair::create($array);
     }
-    public function editTask(Request $request){
+    public function editTarget(Request $request){
         $array = $request->all();
         $array['user_id'] = Auth::id();
 
@@ -67,7 +67,7 @@ class TaskController extends Controller
             'points' => $array['points'],
         ]);
     }
-    public function deleteTask(Request $request) {
+    public function deleteTarget(Request $request) {
         $array = $request->all();
         $array['user_id'] = Auth::id();
 

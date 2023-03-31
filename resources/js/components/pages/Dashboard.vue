@@ -1,7 +1,7 @@
 <template>
     <div class="container container--dashboard">
       <div class="sb sb--r">
-        <tasks/>
+        <targets/>
         <notes/>
       </div>
       <div class="sb sb--l">
@@ -18,7 +18,7 @@
 <script>
     import calendar from '../blocks/Dashboard/DashboardCalendar.vue';
     import shortstats from '../blocks/Dashboard/ShortStats.vue';
-    import tasks from '../blocks/Dashboard/Tasks.vue';
+    import targets from '../blocks/Dashboard/Targets.vue';
     import regular from '../blocks/Dashboard/Regular.vue';
     import notes from '../blocks/Dashboard/Notes.vue';
     import diary from '../blocks/Dashboard/Diary.vue';
@@ -26,7 +26,7 @@
 
     export default {
       components: {
-        calendar, shortstats, tasks, regular, notes, diary, navigation
+        calendar, shortstats, targets, regular, notes, diary, navigation
       },
       data(){
         return {
