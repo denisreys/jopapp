@@ -1,12 +1,12 @@
 <template>
-  <div class="affair">
+  <div class="task">
     <slot name="actions"></slot>
-    <div class="affair__wrap">
-      <label class="affair__label">
-        <input type="checkbox" class="affair__check" :value="id" v-model="selected" @change.later="changeCheckAffair()">
-        <span class="affair__fake"></span>
+    <div class="task__wrap">
+      <label class="task__label">
+        <input type="checkbox" class="task__check" :value="id" v-model="selected" @change.later="changeCheckTask()">
+        <span class="task__fake"></span>
       </label>
-      <div class="affair__name">{{name}}</div>
+      <div class="task__name">{{name}}</div>
     </div>
   </div>
 </template>
@@ -27,8 +27,8 @@
       }
     },
     methods: {
-      changeCheckAffair(){
-        axios.post('/createorupdatecheck', {affair_id: this.id, date: this.date, status: this.selected}).then((r) => {
+      changeCheckTask(){
+        axios.post('/createorupdatecheck', {task_id: this.id, date: this.date, status: this.selected}).then((r) => {
           this.$parent.$parent.updateStats();
         }).catch((error) =>{
           alert('АШИБКА')
@@ -40,12 +40,12 @@
 
 <style lang="scss">
   @import './resources/sass/_variables.scss';
-  .affair {
-    &:hover .affair__actions__item{
+  .task {
+    &:hover .task__actions__item{
       opacity: 0.2;
     }
   }
-  .affair__label {
+  .task__label {
     float: left;
     position: relative;
 
@@ -54,7 +54,7 @@
       z-index: -1;
       position: absolute;
     }
-    .affair__fake {
+    .task__fake {
       display: inline-block;
       border: 2px solid $black;
       border-radius: 30px;
@@ -62,84 +62,82 @@
       vertical-align: middle;
     }
   }
-  .affair__label>input:checked+.affair__fake{
+  .task__label>input:checked+.task__fake{
     background-color: $black;
   }
-  .affair__label>input:not(:checked)+.affair__fake:hover{
+  .task__label>input:not(:checked)+.task__fake:hover{
     background-color: #e8e8e8;
   }
-  .affair__wrap {
+  .task__wrap {
     overflow: hidden;
   }
-  .affair__actions {
+  .task__actions {
     float: right;
 
     .fal {
       color: $black;
     }
-    .affair__actions__item {
+    .task__actions__item {
       opacity: 0;
 
       &:hover {
         opacity: 1;
       }
     }
-    .affair__actions__item--delete:hover .fal {
+    .task__actions__item--delete:hover .fal {
       color: red;
     }
   }
-  
-  .affair--default {
-    .affair__fake {
+  .task--default {
+    .task__fake {
       width: 10px;
       height: 10px;
     }
-    .affair__wrap {
+    .task__wrap {
       margin-right: 22px;
     }
-    .affair__name {
+    .task__name {
       margin-left: 25px;
     }
     &:not(:last-child) {
       margin-bottom: 8px;
     }
   }
-  .affair--small {
-    .affair__fake {
+  .task--small {
+    .task__fake {
       width: 8px;
       height: 8px;
     }
-    .affair__wrap {
+    .task__wrap {
       margin-right: 20px;
     }
-    .affair__name {
+    .task__name {
       margin-left: 22px;
     }
     &:not(:last-child) {
       margin-bottom: 5px;
     }
   }
-  .affair--sb {
-    .affair__fake {
+  .task--sb {
+    .task__fake {
       width: 8px;
       height: 8px;
     }
-    .affair__actions {
+    .task__actions {
       margin-right: -9px;
 
       .fal {
         font-size: 16px;
       }
     }
-    .affair__wrap {
+    .task__wrap {
       margin-right: 10px;
     }
-    .affair__name {
+    .task__name {
       margin-left: 20px;
     }
     &:not(:last-child) {
       margin-bottom: 5px;
     }
   }
-
 </style>

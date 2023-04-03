@@ -10,8 +10,8 @@
         <navigation/>
       </div>
       <div class="main">
-        <diary/>
-        <regular/>
+        <todoes/>
+        <groups/>
       </div>
     </div>
   </template>
@@ -19,14 +19,14 @@
     import calendar from '../blocks/Dashboard/DashboardCalendar.vue';
     import shortstats from '../blocks/Dashboard/ShortStats.vue';
     import targets from '../blocks/Dashboard/Targets.vue';
-    import regular from '../blocks/Dashboard/Regular.vue';
+    import groups from '../blocks/Dashboard/Groups.vue';
     import notes from '../blocks/Dashboard/Notes.vue';
-    import diary from '../blocks/Dashboard/Diary.vue';
+    import todoes from '../blocks/Dashboard/Todoes.vue';
     import navigation from '../blocks/Navigation.vue';
 
     export default {
       components: {
-        calendar, shortstats, targets, regular, notes, diary, navigation
+        calendar, shortstats, targets, groups, notes, todoes, navigation
       },
       data(){
         return {

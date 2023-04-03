@@ -5,21 +5,18 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Affair;
+use App\Models\Task;
 
 class TargetController extends Controller
 {
     public function getTargets(){
-        $user_id = Auth::id();
+        //YOU CAN SEE TARGETS A WEEK AFTER CHECK
+        $response = Task::where(['user_id' => Auth::id(), 'state' => 3, 'active' => 1])
+                    ->doesntHave('checkLastWeek')
+                    ->orderBy('id')
+                    ->with('checkWeek')->get();
 
-        if($user_id){
-            $jopa = Affair::where(['user_id' => $user_id, 'state' => 3, 'active' => 1])
-                        ->doesntHave('checkLastWeek')
-                        ->orderBy('id')
-                        ->with('checkWeek')->get();
-
-            return response()->json($jopa, 200);            
-        }
+        return response()->json($response, 200);            
     }
     public function addTarget(Request $request){
         $array = $request->all();
@@ -39,18 +36,17 @@ class TargetController extends Controller
             return response()->json($response, 400);
         }
 
-        Affair::create($array);
+        Task::create($array);
     }
     public function editTarget(Request $request){
         $array = $request->all();
-        $array['user_id'] = Auth::id();
 
         $validator = Validator($array, [
             'id' => 'required',
             'name' => 'required|min:1|max:50',
             'points' => 'required|numeric|between:10,50',
-            'user_id' => 'required'
         ]);
+
         if($validator->fails()) {
             $response = [
                 'success' => false,
@@ -59,9 +55,9 @@ class TargetController extends Controller
             return response()->json($response, 400);
         }
 
-        Affair::where([
+        Task::where([
             'id' => $array['id'],
-            'user_id' => $array['user_id']
+            'user_id' => Auth::id()
         ])->update([
             'name' => $array['name'],
             'points' => $array['points'],
@@ -69,12 +65,11 @@ class TargetController extends Controller
     }
     public function deleteTarget(Request $request) {
         $array = $request->all();
-        $array['user_id'] = Auth::id();
 
-        if($array['id'] && $array['user_id']){
-            Affair::where([
+        if($array['id']){
+            Task::where([
                 'id' => $array['id'],
-                'user_id' => $array['user_id']
+                'user_id' => Auth::id()
             ])->update([
                 'active' => 0,
             ]);

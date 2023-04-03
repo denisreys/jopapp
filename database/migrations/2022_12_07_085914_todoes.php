@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('diaries', function (Blueprint $table) {
+        Schema::create('todoes', function (Blueprint $table) {
             $table->id();
-            $table->integer('affair_id');
+            $table->integer('task_id');
             $table->datetime('date');
         });
     }

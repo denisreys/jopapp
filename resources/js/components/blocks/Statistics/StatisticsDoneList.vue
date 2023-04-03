@@ -6,7 +6,7 @@
     <template v-if="doneList.length">
       <div class="sb__list sb__list--donelist">
         <div class="sb__list__item" v-for="(item, index) in doneList">
-          <div class="donelist__name">{{ item.list[0].affair.name }}</div>
+          <div class="donelist__name">{{ item.list[0].task.name }}</div>
             <div class="donelist__button" @click="toggleList(index)" >
               <i class="fa-sharp fa-light " :class="index !== showList ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
             </div>
@@ -46,11 +46,11 @@
         Object.entries(array).forEach(([key, day]) => {
           if(day.checks){
             Object.entries(day.checks).forEach(([key, check]) => {
-              if(check.affair.id in response)
-                response[check.affair_id].push(check);
+              if(check.task.id in response)
+                response[check.task_id].push(check);
               else {
-                response[check.affair_id] = [];
-                response[check.affair_id].push(check);
+                response[check.task_id] = [];
+                response[check.task_id].push(check);
               }
             });
           }

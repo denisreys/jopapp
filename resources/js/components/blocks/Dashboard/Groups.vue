@@ -1,13 +1,16 @@
 <template>
-  <div class="main__regular">
+  <div class="main__groups">
     <div class="main__header">
-      <div class="main__header__title">Groups and Regular tasks</div>
+      <div class="main__header__title">Groups and Repeatable tasks</div>
       <div class="main__header__add">
-        <a href="#" class="main__header__add__a" @click.prevent="$refs.popupGroupCreate.popupShow();"><i class="fal fa-plus"></i></a>
+        <a href="#" class="main__header__add__a" 
+        @click.prevent="$refs.popupGroupCreate.popupShow();">
+        <i class="fal fa-plus"></i>
+      </a>
       </div>
     </div>
-    <ul class="regular__list" v-if="list.length != 0">
-      <li class="regular__item" v-for="group in list">
+    <ul class="groups__list" v-if="list.length != 0">
+      <li class="groups__item" v-for="group in list">
         <div class="group">
           <ul class="group__actions">
             <li class="group__actions__item">
@@ -21,9 +24,9 @@
             </li>
             <li class="group__actions__item">
               <a href="#" @click.prevent="
-                $refs.popupAffairCreate.popupShow();
-                popups.affairCreate.form.group_id = group.id;
-                popups.affairCreate.form.group_name = group.name;
+                $refs.popupTaskCreate.popupShow();
+                popups.taskCreate.form.group_id = group.id;
+                popups.taskCreate.form.group_name = group.name;
               "><i class="fal fa-plus"></i></a>
             </li>
           </ul>
@@ -32,26 +35,26 @@
             <div class="group__t">{{group.name}}</div>
           </div>
         </div>
-        <div class="group__list" v-if="group.affairs.length">
-          <affair
-            v-for="item in group.affairs"
+        <div class="group__list" v-if="group.tasks.length">
+          <task
+            v-for="item in group.tasks"
             :key="item.id"
-            class="affair--default"
+            class="task--default"
             :id="item.id"
             :name="item.name"
             :checked="item.check">
             <template v-slot:actions>
-              <div class="affair__actions">
-                <a href="#" class="affair__actions__item affair__actions__item--edit" @click.prevent="
-                  $refs.popupAffairEdit.popupShow();
-                  popups.affairEdit.form.id = item.id;
-                  popups.affairEdit.form.group_id = item.group_id;
-                  popups.affairEdit.form.name = item.name;
-                  popups.affairEdit.form.points = item.points;
+              <div class="task__actions">
+                <a href="#" class="task__actions__item task__actions__item--edit" @click.prevent="
+                  $refs.popupTaskEdit.popupShow();
+                  popups.taskEdit.form.id = item.id;
+                  popups.taskEdit.form.group_id = item.group_id;
+                  popups.taskEdit.form.name = item.name;
+                  popups.taskEdit.form.points = item.points;
                 "><i class="fal fa-pencil"></i></a>
               </div>
             </template>
-          </affair>
+          </task>
         </div>
       </li>
     </ul>
@@ -130,20 +133,20 @@
 
     <!-- СОЗДАТЬ НОВОЕ РЕГУЛЯРНОЕ ЗАНЯТИЕ -->
     <v-popup
-      ref="popupAffairCreate"
-      :title="popups.affairCreate.title"
-      :desc="popups.affairCreate.desc"
-      :btnSubmitName="popups.affairCreate.btnSubmitName"
-      @popupSubmit="affairCreateSubmit()">
-      <p v-if="popups.affairCreate.form.errors.name">{{popups.affairCreate.form.errors.name}}</p>
-      <p v-if="popups.affairCreate.form.errors.points">{{popups.affairCreate.form.errors.points}}</p>
+      ref="popupTaskCreate"
+      :title="popups.taskCreate.title"
+      :desc="popups.taskCreate.desc"
+      :btnSubmitName="popups.taskCreate.btnSubmitName"
+      @popupSubmit="taskCreateSubmit()">
+      <p v-if="popups.taskCreate.form.errors.name">{{popups.taskCreate.form.errors.name}}</p>
+      <p v-if="popups.taskCreate.form.errors.points">{{popups.taskCreate.form.errors.points}}</p>
       <div class="input-group">
-        <input type="text" ref="affairCreate" class="input w-100" placeholder="Чем займешься?" v-model="popups.affairCreate.form.name">
+        <input type="text" ref="taskCreate" class="input w-100" placeholder="Чем займешься?" v-model="popups.taskCreate.form.name">
       </div>
       <div class="input-group input-group--inline">
         <div class="input-group__item">
-          <label for="popup-affair-points" class="label label--default">Difficult</label>
-          <select id="popup-affair-points" class="select" v-model="popups.affairCreate.form.points">
+          <label for="popup-task-points" class="label label--default">Difficult</label>
+          <select id="popup-task-points" class="select" v-model="popups.taskCreate.form.points">
             <option value="1">Очень легко</option>
             <option value="2">Легко</option>
             <option value="3">Нормально</option>
@@ -152,8 +155,8 @@
           </select>
         </div>
         <div class="input-group__item">
-          <label for="popup-affair-group" class="label label--default">Group</label>
-          <select id="popup-affair-group" class="select" v-model="popups.affairCreate.form.group_id">
+          <label for="popup-task-group" class="label label--default">Group</label>
+          <select id="popup-task-group" class="select" v-model="popups.taskCreate.form.group_id">
             <option v-for="group in list" :value="group.id">{{ group.name }}</option>
           </select>
         </div>
@@ -162,20 +165,20 @@
 
     <!-- РЕДАКТИРОВАТЬ РЕГУЛЯРНОЕ ЗАНЯТИЕ -->
     <v-popup
-      ref="popupAffairEdit"
-      :title="popups.affairEdit.title"
-      :desc="popups.affairEdit.desc"
-      :btnSubmitName="popups.affairEdit.btnSubmitName"
-      @popupSubmit="affairEditSubmit()">
-      <p v-if="popups.affairEdit.form.errors.name">{{popups.affairEdit.form.errors.name[0]}}</p>
-      <p v-if="popups.affairEdit.form.errors.points">{{popups.affairEdit.form.errors.points[0]}}</p>
+      ref="popupTaskEdit"
+      :title="popups.taskEdit.title"
+      :desc="popups.taskEdit.desc"
+      :btnSubmitName="popups.taskEdit.btnSubmitName"
+      @popupSubmit="taskEditSubmit()">
+      <p v-if="popups.taskEdit.form.errors.name">{{popups.taskEdit.form.errors.name[0]}}</p>
+      <p v-if="popups.taskEdit.form.errors.points">{{popups.taskEdit.form.errors.points[0]}}</p>
       <div class="input-group">
-        <input type="text" ref="affairEdit" class="input w-100" placeholder="Чем займешься?" v-model="popups.affairEdit.form.name">
+        <input type="text" ref="taskEdit" class="input w-100" placeholder="Чем займешься?" v-model="popups.taskEdit.form.name">
       </div>
       <div class="input-group input-group--inline">
         <div class="input-group__item">
-          <label for="popup-affair-points" class="label label--default">Difficult</label>
-          <select id="popup-affair-points" class="select" v-model="popups.affairEdit.form.points">
+          <label for="popup-task-points" class="label label--default">Difficult</label>
+          <select id="popup-task-points" class="select" v-model="popups.taskEdit.form.points">
             <option value="1">Очень легко</option>
             <option value="2">Легко</option>
             <option value="3">Нормально</option>
@@ -184,14 +187,14 @@
           </select>
         </div>
         <div class="input-group__item">
-          <label for="popup-affair-group" class="label label--default">Group</label>
-          <select id="popup-affair-group" class="select" v-model="popups.affairEdit.form.group_id">
+          <label for="popup-task-group" class="label label--default">Group</label>
+          <select id="popup-task-group" class="select" v-model="popups.taskEdit.form.group_id">
             <option v-for="group in list" :value="group.id">{{ group.name }}</option>
           </select>
         </div>
       </div>
       <template v-slot:additional>
-        <a href="#" @click.prevent="affairDelete()" class="popup__footer__additional__delete">Удалить</a>
+        <a href="#" @click.prevent="taskDelete()" class="popup__footer__additional__delete">Удалить</a>
       </template>
     </v-popup>
   </div>
@@ -199,12 +202,12 @@
 
 <script>
   import axios from 'axios';
-  import affair from './Affair.vue';
+  import task from './Task.vue';
   import popup from '../Popup.vue';
 
   export default {
     components: {
-      affair,
+      task,
       'v-popup' : popup,
   	},
     data () {
@@ -238,8 +241,8 @@
               errors: []
             }
           },
-          affairCreate: {
-            name: 'affairCreate',
+          taskCreate: {
+            name: 'taskCreate',
             visibility: false,
             title: 'Добавить регулярное дело',
             desc: 'Добавляйте повторяющиеся дела в список, чтобы в будущем было удобней их планировать по дням или, чтобы иметь возможность отмечать их выполнение без предварительного планирования. <br><br>Примеры: Позаниматься в Дуолинго; Выйти на пробежку; Почитать книгу;',
@@ -251,8 +254,8 @@
               errors: []
             }
           },
-          affairEdit: {
-            name: 'affairEdit',
+          taskEdit: {
+            name: 'taskEdit',
             visibility: false,
             title: 'Редактировать регулярное дело',
             desc: 'Добавляйте повторяющиеся дела в список, чтобы в будущем было удобней их планировать по дням или, чтобы иметь возможность отмечать их выполнение без предварительного планирования. <br><br>Примеры: Позаниматься в Дуолинго; Выйти на пробежку; Почитать книгу;',
@@ -311,7 +314,7 @@
       groupDelete(){
         axios.post('/deletegroup', this.popups.groupEdit.form).then(() =>{
           this.$refs.popupGroupEdit.popupClose();
-          this.getRegularList();
+          this.getGroups();
           this.popups.groupEdit.form.name = this.popups.groupEdit.form.color = '';
           this.popups.groupEdit.form.errors = [];
         }).catch((error) =>{
@@ -321,7 +324,7 @@
       groupEditSubmit(){
         axios.post('/editgroup', this.popups.groupEdit.form).then(() =>{
           this.$refs.popupGroupEdit.popupClose();
-          this.getRegularList();
+          this.getGroups();
           this.popups.groupEdit.form.name = this.popups.groupEdit.form.color = '';
           this.popups.groupEdit.form.errors = [];
         }).catch((error) =>{
@@ -331,47 +334,47 @@
       groupCreateSubmit(){
         axios.post('/creategroup', this.popups.groupCreate.form).then((r) =>{
           this.$refs.popupGroupCreate.popupClose();
-          this.getRegularList();
+          this.getGroups();
           this.popups.groupCreate.form.name = this.popups.groupCreate.form.color = '';
           this.popups.groupCreate.form.errors = [];
         }).catch((error) =>{
           this.popups.groupCreate.form.errors = error.response.data.errors;
         });
       },
-      affairCreateSubmit(){
-        axios.post('/createaffair', this.popups.affairCreate.form).then((r) =>{
-          this.$refs.popupAffairCreate.popupClose();
-          this.getRegularList();
-          this.popups.affairCreate.form.name = '';
-          this.popups.affairCreate.form.points = 3;
-          this.popups.affairCreate.form.errors = [];
+      taskCreateSubmit(){
+        axios.post('/createtask', this.popups.taskCreate.form).then((r) =>{
+          this.$refs.popupTaskCreate.popupClose();
+          this.getGroups();
+          this.popups.taskCreate.form.name = '';
+          this.popups.taskCreate.form.points = 3;
+          this.popups.taskCreate.form.errors = [];
         }).catch((error) =>{
-          this.popups.affairCreate.form.errors = error.response.data.errors;
+          this.popups.taskCreate.form.errors = error.response.data.errors;
         });
       },
-      affairEditSubmit(){
-        axios.post('/editaffair', this.popups.affairEdit.form).then(() =>{
-          this.$refs.popupAffairEdit.popupClose();
-          this.getRegularList();
-          this.popups.affairEdit.form.name = this.popups.affairEdit.form.points = '';
-          this.popups.affairEdit.form.errors = [];
+     taskEditSubmit(){
+        axios.post('/edittask', this.popups.taskEdit.form).then(() =>{
+          this.$refs.popupTaskEdit.popupClose();
+          this.getGroups();
+          this.popups.taskEdit.form.name = this.popups.taskEdit.form.points = '';
+          this.popups.taskEdit.form.errors = [];
 
         }).catch((error) =>{
-          this.popups.affairEdit.form.errors = error.response.data.errors;
+          this.popups.taskEdit.form.errors = error.response.data.errors;
         });
       },
-      affairDelete(){
-        axios.post('/deleteaffair', this.popups.affairEdit.form).then(() =>{
-          this.$refs.popupAffairEdit.popupClose();
-          this.getRegularList();
-          this.popups.affairEdit.form.name = this.popups.affairEdit.form.points = '';
-          this.popups.affairEdit.form.errors = [];
+      taskDelete(){
+        axios.post('/deletetask', this.popups.taskEdit.form).then(() =>{
+          this.$refs.popupTaskEdit.popupClose();
+          this.getGroups();
+          this.popups.taskEdit.form.name = this.popups.taskEdit.form.points = '';
+          this.popups.taskEdit.form.errors = [];
         }).catch((error) =>{
-          this.popups.affairEdit.form.errors = error.response.data.errors;
+          this.popups.taskEdit.form.errors = error.response.data.errors;
         });
       },
-      getRegularList(){
-        axios.get('/getregular')
+      getGroups(){
+        axios.get('/getgroups')
           .then((response) => {
             this.$root.loading.loaded++;
             this.list = response.data;
@@ -379,18 +382,18 @@
       },
     },
     created(){
-      this.getRegularList();
+      this.getGroups();
     }
   }
 </script>
 <style lang="scss" scoped>
   @import './resources/sass/_variables.scss';
 
-  .regular__list {
+  .groups__list {
     column-count: 2;
     margin-right: -5px;
   }
-  .regular__item {
+  .groups__item {
     overflow: hidden;
     margin-right: 5px;
 

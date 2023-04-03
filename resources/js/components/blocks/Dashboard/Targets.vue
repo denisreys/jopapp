@@ -11,14 +11,14 @@
     <template v-if="targets.length != 0">
       <ul class="sb__list">
         <li class="sb__list__item" v-for="target in targets" :key="target.id">
-          <affair
-            class="affair--sb"
+          <task
+            class="task--sb"
             :id="target.id"
             :name="target.name"
             :checked="target.check_week">
             <template v-slot:actions>
-              <div class="affair__actions">
-                <a href="#" class="affair__actions__item affair__actions__item--edit" @click.prevent="
+              <div class="task__actions">
+                <a href="#" class="task__actions__item task__actions__item--edit" @click.prevent="
                   $refs.popupTargetEdit.popupShow();
                   popups.targetEdit.form.id = target.id;
                   popups.targetEdit.form.name = target.name;
@@ -26,7 +26,7 @@
                 "><i class="fal fa-pencil"></i></a>
               </div>
             </template>
-          </affair>
+          </task>
         </li>
       </ul>
     </template>
@@ -49,8 +49,8 @@
         <input type="text" class="input w-100" placeholder="What're the plans?" v-model="popups.targetAdd.form.name">
       </div>
       <div class="input-group">
-        <label for="popup-affair-points" class="label label--default">Difficult</label>
-        <select id="popup-affair-points" class="select" v-model="popups.targetAdd.form.points">
+        <label for="popup-task-points" class="label label--default">Difficult</label>
+        <select id="popup-task-points" class="select" v-model="popups.targetAdd.form.points">
           <option value="10">Очень легко</option>
           <option value="20">Легко</option>
           <option value="30">Нормально</option>
@@ -77,8 +77,8 @@
         <input type="text" class="input w-100" placeholder="What're the plans?" v-model="popups.targetEdit.form.name">
       </div>
       <div class="input-group">
-        <label for="popup-affair-points" class="label label--default">Difficult</label>
-        <select id="popup-affair-points" class="select" v-model="popups.targetEdit.form.points">
+        <label for="popup-task-points" class="label label--default">Difficult</label>
+        <select id="popup-task-points" class="select" v-model="popups.targetEdit.form.points">
           <option value="10">Очень легко</option>
           <option value="20">Легко</option>
           <option value="30">Нормально</option>
@@ -98,12 +98,12 @@
 </template>
 <script>
   import axios from 'axios';
-  import affair from './Affair.vue';
+  import task from './Task.vue';
   import popup from '../Popup.vue';
 
   export default {
     components: {
-      affair,
+      task,
       'v-popup' : popup,
   	},
     data () {

@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
-use App\Models\Affair;
-use App\Models\Diary;
+use App\Models\Task;
+use App\Models\Todo;
 use App\Models\Check;
 use App\Models\Group;
 
@@ -23,29 +23,40 @@ class StatisticsController extends Controller
         $data['month_name'] = date('F');
         $data['today'] = date('j');
         $data['request'] = $request;
-        $data['checks'] = Check::whereHas('affair', function($q) use($user_id) {
+        $data['checks'] = Check::whereHas('task', function($q) use($user_id) {
                                 $q->where(['user_id' => $user_id]);
                                 $q->where('state', '!=' , 3);
                             })
-                            ->with('affair.group')
+                            ->with('task.group')
                             ->orderBy('date', 'ASC')
                             ->get();
-                                            
+        //CALENDAR STARTS 1 JAN *YEAR WHEN YOU DO YOUR FIRST CHECK                                    
         if(count($data['checks']))  
             $start = strtotime('1-1-'.Carbon::parse($data['checks']['0']['date'])->format('Y'));
-        else $start = strtotime(date('Y-m-01'));
-        
+        else $start = strtotime(date('Y-m-01'));        
         $finish = strtotime('Dec 31');
-        
+        //TO FORM THE CALENDAR
+        $dateFor = ['year'=> 0, 'month' => 0];
         for($i=$start; $i<$finish; $i+=86400){
             list($year,$month,$day) = explode("|",date("Y|n|j",$i));
-            $data['calendar'][$year]['months'][$month]['year'] = $year;
-            $data['calendar'][$year]['months'][$month]['month'] = $month;
-            $data['calendar'][$year]['months'][$month]['month_name'] = date("F",$i);
-            $data['calendar'][$year]['months'][$month]['month_name_short'] = date("M",$i);
+            //ADD IF THE MONTH IS NOT EQUALS $DATEFOR
+            if($dateFor['month'] != $month){
+                $dateFor['month'] = $month;
+
+                $data['calendar'][$year]['months'][$month]['year'] = $year;
+                $data['calendar'][$year]['months'][$month]['month'] = $month;
+                $data['calendar'][$year]['months'][$month]['month_name'] = date("F",$i);
+                $data['calendar'][$year]['months'][$month]['month_name_short'] = date("M",$i);
+                $data['calendar'][$year]['months'][$month]['points'] = 0;
+                
+                //YOU KNOW
+                if($dateFor['year'] != $year){
+                    $dateFor['year'] = $year;
+                    $data['calendar'][$year]['points'] = 0;
+                }
+            }
+            
             $data['calendar'][$year]['months'][$month]['days'][$day]['day'] = $day;
-            $data['calendar'][$year]['points'] = 0;
-            $data['calendar'][$year]['months'][$month]['points'] = 0;
             $data['calendar'][$year]['months'][$month]['days'][$day]['points'] = 0;
             
             if($page == 'dashboard')
@@ -53,7 +64,7 @@ class StatisticsController extends Controller
         }
 
         if($page == 'stats') 
-            $data = $this->addDiaryToCalendar($data);
+            $data = $this->addTodoesToCalendar($data);
 
         if($data['checks']){
             foreach($data['checks'] as $check){
@@ -71,7 +82,7 @@ class StatisticsController extends Controller
                 $data = $this->addPointsToStats($date, $data, $check);
 
                 if($page == 'stats') {
-                    $data = $this->addDiaryChecksToStats($date, $data, $check);
+                    $data = $this->addTodoesChecksToStats($date, $data, $check);
                     $data = $this->addPointsByGroupsToStats($date, $data, $check);
                 }
             }
@@ -86,24 +97,24 @@ class StatisticsController extends Controller
         
         return $data;
     }
-    function addDiaryChecksToStats($date, $data, $check){
-        if(isset($data['calendar'][$date['year']]['months'][$date['month']]['days'][$date['day']]['diaries'])){
-            foreach($data['calendar'][$date['year']]['months'][$date['month']]['days'][$date['day']]['diaries'] as $diary){
-                if($diary['affair_id'] == $check['affair_id'])
-                    $data['calendar'][$date['year']]['months'][$date['month']]['days'][$date['day']]['diary_checks'][] = $check;
+    function addTodoesChecksToStats($date, $data, $check){
+        if(isset($data['calendar'][$date['year']]['months'][$date['month']]['days'][$date['day']]['todoes'])){
+            foreach($data['calendar'][$date['year']]['months'][$date['month']]['days'][$date['day']]['todoes'] as $todo){
+                if($todo['task_id'] == $check['task_id'])
+                    $data['calendar'][$date['year']]['months'][$date['month']]['days'][$date['day']]['todoes_checks'][] = $check;
             }
         }
         return $data;
     }
     function addPointsByGroupsToStats($date, $data, $check){
-        $group_id = $check['affair']['group_id'];
+        $group_id = $check['task']['group_id'];
 
-        if($check['affair']['group_id']){
+        if($group_id){
             if(!isset($data['calendar'][$date['year']]['months'][$date['month']]['groups_diagram'][$group_id])){
                 $data['calendar'][$date['year']]['months'][$date['month']]['groups_diagram'][$group_id]['points'] = 0;
                 $data['calendar'][$date['year']]['months'][$date['month']]['groups_diagram'][$group_id]['id'] = $group_id;
-                $data['calendar'][$date['year']]['months'][$date['month']]['groups_diagram'][$group_id]['name'] = $check['affair']['group']['name'];
-                $data['calendar'][$date['year']]['months'][$date['month']]['groups_diagram'][$group_id]['color'] = $check['affair']['group']['color'];
+                $data['calendar'][$date['year']]['months'][$date['month']]['groups_diagram'][$group_id]['name'] = $check['task']['group']['name'];
+                $data['calendar'][$date['year']]['months'][$date['month']]['groups_diagram'][$group_id]['color'] = $check['task']['group']['color'];
             }
             $data['calendar'][$date['year']]['months'][$date['month']]['groups_diagram'][$group_id]['points'] += $check['points'];
         }
@@ -124,24 +135,24 @@ class StatisticsController extends Controller
         $response['total'] = 0;
         $response['diagram'] = [];
 
-        $checks = Check::whereHas('affair', function($q) use($user_id){
+        $checks = Check::whereHas('task', function($q) use($user_id){
                                     $q->where('user_id', $user_id);
                                 })->whereBetween('date', [$dateFrom, $dateTo])
-                                ->with('affair.group')->get();                     
+                                ->with('task.group')->get();                     
 
         foreach($checks as $check){
             $response['total'] += $check['points'];
             
-            if($check['affair']['group_id']){
-                if(!isset($response['diagram'][$check['affair']['group_id']])){
-                    $response['diagram'][$check['affair']['group_id']]['points'] = 0;
-                    $response['diagram'][$check['affair']['group_id']]['id'] = $check['affair']['group_id'];
-                    $response['diagram'][$check['affair']['group_id']]['name'] = $check['affair']['group']['name'];
-                    $response['diagram'][$check['affair']['group_id']]['color'] = $check['affair']['group']['color'];
+            if($check['task']['group_id']){
+                if(!isset($response['diagram'][$check['task']['group_id']])){
+                    $response['diagram'][$check['task']['group_id']]['points'] = 0;
+                    $response['diagram'][$check['task']['group_id']]['id'] = $check['task']['group_id'];
+                    $response['diagram'][$check['task']['group_id']]['name'] = $check['task']['group']['name'];
+                    $response['diagram'][$check['task']['group_id']]['color'] = $check['task']['group']['color'];
                 }
-                $response['diagram'][$check['affair']['group_id']]['points'] += $check['points'];
+                $response['diagram'][$check['task']['group_id']]['points'] += $check['points'];
             }
-            else {
+            else {//POINTS WITHOUT GROUP
                 if(!isset($stat['diagram'][0])){
                     $response['diagram'][0]['points'] = 0;
                     $response['diagram'][0]['id'] = 0;
@@ -164,20 +175,20 @@ class StatisticsController extends Controller
         
         return $this->getCountPointsByGroups($dateFrom, $dateTo);
     }
-    function addDiaryToCalendar($data){
+    function addTodoesToCalendar($data){
         $user_id = Auth::id();
-        $data['diaries'] = Diary::with('affair.checks')->whereHas('affair', function($q) use($user_id){
+        $data['todoes'] = Todo::with('task.checks')->whereHas('task', function($q) use($user_id){
             $q->where('user_id', $user_id);
         })->whereDate('date', '<', Carbon::now())->get();
 
-        if($data['diaries']){
-            foreach($data['diaries'] as $diary){
-                $date = Carbon::parse($diary['date']);
+        if($data['todoes']){
+            foreach($data['todoes'] as $todo){
+                $date = Carbon::parse($todo['date']);
                 $year = $date->format('Y');
                 $month = $date->format('n');
                 $day = $date->format('j');
 
-                $data['calendar'][$year]['months'][$month]['days'][$day]['diaries'][] = $diary;
+                $data['calendar'][$year]['months'][$month]['days'][$day]['todoes'][] = $todo;
             }
         }
         if($data['checks']){
@@ -187,10 +198,10 @@ class StatisticsController extends Controller
                 $month = $date->format('n');
                 $day = $date->format('j');
 
-                if(isset($data['calendar'][$year]['months'][$month]['days'][$day]['diaries'])){
-                    foreach($data['calendar'][$year]['months'][$month]['days'][$day]['diaries'] as $diary){
-                        if($diary['affair_id'] == $check['affair_id'])
-                            $data['calendar'][$year]['months'][$month]['days'][$day]['diary_checks'][] = $check;
+                if(isset($data['calendar'][$year]['months'][$month]['days'][$day]['todoes'])){
+                    foreach($data['calendar'][$year]['months'][$month]['days'][$day]['todoes'] as $todo){
+                        if($todo['task_id'] == $check['task_id'])
+                            $data['calendar'][$year]['months'][$month]['days'][$day]['todoes_checks'][] = $check;
                     }
                 }
             }

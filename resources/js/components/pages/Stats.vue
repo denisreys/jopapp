@@ -36,11 +36,11 @@
 <script>
 import axios from 'axios';
 import navigation from '../blocks/Navigation.vue';
-import calendar from '../blocks/Statistics/StatisticCalendar.vue';
+import calendar from '../blocks/Statistics/StatisticsCalendar.vue';
 import cards from '../blocks/Statistics/StatisticsCards.vue';
 import pointsDiagram from '../blocks/Statistics/StatisticsPointsDiagram.vue';
 import groupsDiagram from '../blocks/Statistics/StatisticsGroupsDiagram.vue';
-import doneList from '../blocks/Statistics/StatisticDoneList.vue';
+import doneList from '../blocks/Statistics/StatisticsDoneList.vue';
 import loader from '../blocks/Loader.vue';
 
     export default {

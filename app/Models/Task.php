@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
-class Affair extends Model
+class Task extends Model
 {
     use HasFactory;
 
@@ -34,8 +34,8 @@ class Affair extends Model
     public function checks(){
         return $this->hasMany(Check::class);
     }
-    public function diary(){
-        return $this->hasOne(Diary::class);
+    public function todo(){
+        return $this->hasOne(Todo::class);
     }
     public function group(){
         return $this->belongsTo(Group::class);

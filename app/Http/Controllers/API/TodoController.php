@@ -5,23 +5,22 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
-use App\Models\Affair;
-use App\Models\Diary;
+use App\Models\Task;
+use App\Models\Todo;
 use App\Models\Group;
 use Illuminate\Support\Facades\Auth;
 
 
-class DiaryController extends Controller
+class TodoController extends Controller
 {
-    
-    public function getDiary(){
+    public function getTodoes(){
         $user_id = Auth::id();
         $week = [];
-
-        $diaries = Diary::with('affair.checks')->whereHas('affair', function($q) use($user_id){
+        //GET TODOES WITH CHECKS BY DATE BETWEEN TODAY AND +7 DAYS
+        $todoes = Todo::with('task.checks')->whereHas('task', function($q) use($user_id){
             $q->where('user_id', $user_id);
         })->whereBetween('date', [Carbon::today(), Carbon::today()->addDays(7)])->get()->toArray();
-        
+        //GET WEEK WITH DATA
         for($i = 0; $i < 7;){
             $day = Carbon::today()->addDays($i);
             $week[$i]['date'] = date_format($day,'Y-m-d H:i:s');
@@ -32,22 +31,23 @@ class DiaryController extends Controller
             $week[$i]['month_name_short'] = date_format($day, 'M');
             $week[$i]['todoes'] = [];
 
-            foreach($diaries as $key => $diary){
-                $diaryDateYmd = date_format(date_create($diary['date']), 'Ymd');
-                
-                if($diaryDateYmd === $week[$i]['ymd']) {
-                    if($diary['affair']['checks']){
-                        foreach($diary['affair']['checks'] as $check){
+            foreach($todoes as $key => $todo){
+                $todoDateYmd = date_format(date_create($todo['date']), 'Ymd');
+                //ADD TODOES BY WEEK DATE
+                if($todoDateYmd === $week[$i]['ymd']) {
+                    if($todo['task']['checks']){
+                        //ADD CHECKS BY WEEK DATE
+                        foreach($todo['task']['checks'] as $check){
                             $checkDateYmd = date_format(date_create($check['date']), 'Ymd');
                             
                             if($checkDateYmd === $week[$i]['ymd']){
-                                $diary['affair']['check'] = $check;
+                                $todo['task']['check'] = $check;
                                 break;
                             }
                         }
-                        unset($diary['affair']['checks']);
+                        unset($todo['task']['checks']);
                     }
-                    array_push($week[$i]['todoes'], $diary);
+                    array_push($week[$i]['todoes'], $todo);
                 }
             }
 
@@ -58,13 +58,11 @@ class DiaryController extends Controller
     }
     public function addTodo(Request $request){
         $array = $request->all();
-        $array['user_id'] = Auth::id();
 
         if(isset($array['id'])){
             $validator = Validator($array, [
                 'date' => 'required|date_format:Y-m-d H:i:s',
-                'id' => 'required|numeric',
-                'user_id' => 'required'
+                'id' => 'required|numeric'
             ]);
             if($validator->fails()){
                 $response = [
@@ -74,15 +72,14 @@ class DiaryController extends Controller
                 return response()->json($response, 400);
             }
             
-            $isItYours = Affair::where(['id'=> $array['id'], 'user_id' => $array['user_id']])->first();
+            $isItYours = Task::where(['id'=> $array['id'], 'user_id' => Auth::id()])->first();
             
             if($isItYours){
-                Diary::create(['affair_id' => $array['id'], 'date' => $array['date']]);
+                Todo::create(['task_id' => $array['id'], 'date' => $array['date']]);
             }
         }
         else if(isset($array['name']) && isset($array['points'])){
             $validator = Validator($array, [
-                'user_id' => 'required',
                 'date' => 'required|date_format:Y-m-d H:i:s',
                 'name' => 'required|min:1|max:50',
                 'points' => 'required|numeric|between:0,5',
@@ -94,9 +91,9 @@ class DiaryController extends Controller
                 ];
                 return response()->json($response, 400);
             }
-
+            //IS IT YOUR THE GROUP?
             if($array['group_id']){
-                $isGroupYours = Group::where(['id' => $array['group_id'], 'user_id' => $array['user_id']])->first();
+                $isGroupYours = Group::where(['id' => $array['group_id'], 'user_id' => Auth::id()])->first();
 
                 if(!$isGroupYours) {
                     $response = [
@@ -107,25 +104,21 @@ class DiaryController extends Controller
                 }
             }
             
-            $affair_id = Affair::create(['name' => $array['name'], 
+            $task_id = Task::create(['name' => $array['name'], 
                                          'points' => $array['points'], 
                                          'group_id' => $array['group_id'], 
-                                         'user_id' => $array['user_id'],
+                                         'user_id' => Auth::id(),
                                          'state' => 1])->id;
             
-            if($affair_id)
-                Diary::create(['affair_id' => $affair_id, 'date' => $array['date']]);
+            if($task_id)
+                Todo::create(['task_id' => $task_id, 'date' => $array['date']]);
         }
 
     }
     public function deleteTodo(Request $request){
-        $array['user_id'] = Auth::id();
-        $array['diary_id'] = $request->id;
-        $diary_id = $array['diary_id'];
-
+        $array['todo_id'] = $request->id;
         $validator = Validator($array, [
-            'user_id' => 'required',
-            'diary_id' => 'required',
+            'todo_id' => 'required',
         ]);
         if($validator->fails()){
             $response = [
@@ -135,18 +128,20 @@ class DiaryController extends Controller
             return response()->json($response, 400);
         }
 
-        $affair = Affair::where('user_id', $array['user_id'])
-            ->whereHas('diary', function($q) use($diary_id){
-                $q->where('id', $diary_id);
-            })->first();
+        //IS IT YOUR THE TODO?
+        $todo_id = $array['todo_id'];
+        $task = Task::where('user_id', Auth::id())
+                    ->whereHas('todo', function($q) use($todo_id){
+                        $q->where('id', $todo_id);
+                  })->first();
         
-        if($affair){
-            if($affair['state'] == 1){
-                Affair::where('id', $affair['id'])->delete();
-                Diary::where('id', $diary_id)->delete();
+        if($task){
+            if($task['state'] == 1){
+                Task::where('id', $task['id'])->delete();
+                Todo::where('id', $todo_id)->delete();
             }
-            else if($affair['state'] == 2)
-                Diary::where('id', $diary_id)->delete();
+            else if($task['state'] == 2)
+                Todo::where('id', $todo_id)->delete();
         }
     }
 }

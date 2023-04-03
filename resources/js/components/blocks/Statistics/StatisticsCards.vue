@@ -14,7 +14,6 @@
             {'fa-right': cards.points == lastDateCards.points}
           ]"></i>
         </div>
-        <div class="cards__item__dynamics__value">{{ lastDateCards.points }} pt.</div>
         <div class="cards__item__dynamics__percent">{{ dynamicInPercent(cards.points, lastDateCards.points) }}</div>
       </div>
     </div>
@@ -24,22 +23,22 @@
         <div class="cards__item__value__text">{{ cards.difficult }}</div>
       </div>
       <div class="cards__item__name">
-        <template v-if="cards.difficult >= 1 && cards.difficult < 2">Very eazy</template>
-        <template v-else-if="cards.difficult >= 2 && cards.difficult < 3">Eazy</template>
-        <template v-else-if="cards.difficult >= 3 && cards.difficult < 4">Normal</template>
-        <template v-else-if="cards.difficult >= 4 && cards.difficult < 4.5">Hard</template>
+        <template v-if="cards.difficult == 0">No</template>
+        <template v-else-if="cards.difficult >= 1 && cards.difficult < 1.5">Very eazy</template>
+        <template v-else-if="cards.difficult >= 1.5 && cards.difficult < 2.5">Eazy</template>
+        <template v-else-if="cards.difficult >= 2.5 && cards.difficult < 3.5">Normal</template>
+        <template v-else-if="cards.difficult >= 3.5 && cards.difficult < 4.5">Hard</template>
         <template v-else-if="cards.difficult >= 4.5 && cards.difficult <= 5">Very hard</template>
         difficulty
       </div>
       <div class="cards__item__dynamics">
         <div class="cards__item__dynamics__icon">
           <i class="fa-solid" :class="[
-            {'fa-down-left': cards.diary_checks < lastDateCards.diary_checks },
-            {'fa-up-right': cards.diary_checks > lastDateCards.diary_checks},
-            {'fa-right': cards.diary_checks == lastDateCards.diary_checks}
+            {'fa-down-left': cards.difficult < lastDateCards.difficult },
+            {'fa-up-right': cards.difficult > lastDateCards.difficult},
+            {'fa-right': cards.difficult == lastDateCards.difficult}
           ]"></i>
         </div>
-        <div class="cards__item__dynamics__value">{{ lastDateCards.difficult }}</div>
         <div class="cards__item__dynamics__percent">{{ dynamicInPercent(cards.difficult, lastDateCards.difficult) }}</div>
       </div>
     </div>
@@ -57,31 +56,31 @@
             {'fa-right': cards.done == lastDateCards.done}
           ]"></i>
         </div>
-        <div class="cards__item__dynamics__percent">{{ Math.round(cards.done - lastDateCards.done) + '% this period' }}</div>
+        <div class="cards__item__dynamics__percent">
+          <template v-if="cards.done == lastDateCards.done">the same</template>
+          <template v-else>{{ Math.round(cards.done - lastDateCards.done) + '%' }}</template>
+        </div>
       </div>
     </div>
     <div class="cards__item">
       <div class="cards__item__value">
         <div class="cards__item__value__icon"><i class="fa-light fa-calendar-plus"></i></div>
-        <div class="cards__item__value__text">{{ cards.diaries }}</div>
+        <div class="cards__item__value__text">{{ cards.todoes }}</div>
       </div>
-      <div class="cards__item__name">Diaries</div>
+      <div class="cards__item__name">Todoes</div>
       <div class="cards__item__dynamics">
         <div class="cards__item__dynamics__icon">
           <i class="fa-solid" :class="[
-            {'fa-down-left': cards.diaries < lastDateCards.diaries },
-            {'fa-up-right': cards.diaries > lastDateCards.diaries},
-            {'fa-right': cards.diaries == lastDateCards.diaries}
+            {'fa-down-left': cards.todoes < lastDateCards.todoes },
+            {'fa-up-right': cards.todoes > lastDateCards.todoes},
+            {'fa-right': cards.todoes == lastDateCards.todoes}
           ]"></i>
         </div>
-        <div class="cards__item__dynamics__value">{{ lastDateCards.diaries }}</div>
-        <div class="cards__item__dynamics__percent">{{ dynamicInPercent(cards.diaries, lastDateCards.diaries)  }}</div>
+        <div class="cards__item__dynamics__percent">{{ dynamicInPercent(cards.todoes, lastDateCards.todoes) }}</div>
       </div>
     </div>
-    
   </div>
 </template>
-
 <script>
   export default {
     props: {
@@ -89,21 +88,33 @@
       fullData: Object
     },
     methods: {
-      dynamicInPercent(firstValue, secondValue){
-        var response = 0;
+      dynamicInPercent(firstValue, lastValue){
+        var response = '';
 
-        if(firstValue && secondValue) 
-          response = Math.round(((firstValue/secondValue) * 100 - 100));
+        if(firstValue == lastValue)
+          response = 'the same';
+        else if(!firstValue || !lastValue){
+          response = firstValue - lastValue;
+
+          if(response > 0) response = '+' + response;
+
+          response += ' units';
+        }
+        else {
+          response = Math.round((firstValue/lastValue) * 100 - 100);
+
+          if(response > 0) response = '+' + response;
+          
+          response += '%';
+        }
         
-        response += '% this period';
-
         return response;
       },
       getCardsInfo(array){
         var response = {
-              points: 0,
-              diaries: 0,
-              diary_checks: 0,
+              points: array.points,
+              todoes: 0,
+              todoes_checks: 0,
               done: 0,
               difficult: 0
             }, 
@@ -113,22 +124,21 @@
           Object.entries(array.months).forEach(([key, month]) => {
             Object.entries(month.days).forEach(([key, day]) => {
               if(day.checks) checksCount += day.checks.length;
-              if(day.diaries) response['diaries'] += day.diaries.length;
-              if(day.diary_checks) response['diary_checks'] += day.diary_checks.length;
+              if(day.todoes) response['todoes'] += day.todoes.length;
+              if(day.todoes_checks) response['todoes_checks'] += day.todoes_checks.length;
             });
           });
         }
         else if(array.days){
-          response.points = array.points;
           Object.entries(array.days).forEach(([key, day]) => {
               if(day.checks) checksCount += day.checks.length;
-              if(day.diaries) response['diaries'] += day.diaries.length;
-              if(day.diary_checks) response['diary_checks'] += day.diary_checks.length;
+              if(day.todoes) response['todoes'] += day.todoes.length;
+              if(day.todoes_checks) response['todoes_checks'] += day.todoes_checks.length;
           });
         }
 
-        if(response['diaries'] || response['diary_checks'])
-          response['done'] = Math.round((response['diary_checks'] / response['diaries']) * 100);
+        if(response['todoes'] || response['todoes_checks'])
+          response['done'] = Math.round((response['todoes_checks'] / response['todoes']) * 100);
         if(checksCount > 0)
           response.difficult = (response.points / checksCount).toFixed(2);
 
@@ -142,9 +152,10 @@
       lastDateCards() {
         var response = {
               points: 0,
-              diaries: 0,
-              diary_checks: 0,
-              done: 0
+              todoes: 0,
+              todoes_checks: 0,
+              done: 0,
+              difficult: 0
             },
             lastDate = {year: this.selectedData.year, month: 0};
 
@@ -161,12 +172,12 @@
             lastDate.year--;
             lastDate.month = 12;
           }
-          
+         
           if(lastDate.year in this.fullData.calendar)
-            if(lastDate.month in this.fullData.calendar[lastDate.year])
+            if(lastDate.month in this.fullData.calendar[lastDate.year].months)
               response = this.fullData.calendar[lastDate.year].months[lastDate.month];
         }
-
+        
         return this.getCardsInfo(response);
       }
     },

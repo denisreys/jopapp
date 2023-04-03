@@ -1,7 +1,7 @@
 <template>
   <div class="chart chart--groups mt-30">
     <div class="main__header">
-      <div class="main__header__title">Groups chart</div>
+      <div class="main__header__title">Points by groups</div>
     </div>
     <div class="chart__container">
       <div class="chart__list chart__list--circle" >

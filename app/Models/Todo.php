@@ -5,16 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Check extends Model
+class Todo extends Model
 {
-    public $timestamps = false;
-    
     use HasFactory;
-
+    public $timestamps = false;
+    protected $table = 'todoes';
     protected $fillable = [
-        'task_id',
+        'user_id',
         'date',
-        'points'
+        'group_id',
+        'name',
+        'task_id'
     ];
 
     public function task(){
