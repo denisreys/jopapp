@@ -1,5 +1,5 @@
 <template>
-    <div class="container container--auth">
+    <div class="wrapper wrapper--auth">
         <div class="auth">
             <div class="auth__header">
                 <img class="auth__header__img" src="/images/dog2.png" alt="good dog">

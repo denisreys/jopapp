@@ -1,17 +1,17 @@
 <template>
-    <div class="container container--dashboard">
-      <div class="sb sb--r">
-        <targets/>
-        <notes/>
-      </div>
+    <div class="wrapper wrapper--dashboard">
       <div class="sb sb--l">
         <shortstats :statsIsUpdate="statsIsUpdate"/>
         <calendar />
         <navigation/>
       </div>
-      <div class="main">
+      <div class="container">
         <todoes/>
         <groups/>
+      </div>
+      <div class="sb sb--r">
+        <targets/>
+        <notes/>
       </div>
     </div>
   </template>
@@ -45,7 +45,3 @@
       name: 'Dashboard',
     }
 </script>
-<style lang="scss">
-    @import './resources/sass/_variables.scss';
-
-</style>

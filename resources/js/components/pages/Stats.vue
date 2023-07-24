@@ -1,5 +1,5 @@
 <template>
-    <div class="container container--dashboard">
+    <div class="wrapper wrapper--stats">
         <div class="sb sb--l">
             <calendar
                 v-if="data.calendar"
@@ -7,28 +7,30 @@
                 />
             <navigation/>
         </div>
-        <div class="main">
+        <div class="container">
             <cards
                 v-if="data.calendar"
                 :fullData="data"
                 :selectedData="dataBySelectedDate"
             />
-            <div class="sb sb--r">
-                <doneList
-                    v-if="data.calendar"
-                    :selectedData="dataBySelectedDate"
-                />
-            </div>
-            <div class="main">
-                <pointsDiagram
-                    v-if="data.calendar"
-                    :fullData="data"
-                    :selectedData="dataBySelectedDate"
-                />
-                <groupsDiagram
-                    v-if="data.calendar"
-                    :selectedData="dataBySelectedDate"
-                />
+            <div class="container">
+                <div class="sb sb--r">
+                    <doneList
+                        v-if="data.calendar"
+                        :selectedData="dataBySelectedDate"
+                    />
+                </div>
+                <div class="container">
+                    <pointsDiagram
+                        v-if="data.calendar"
+                        :fullData="data"
+                        :selectedData="dataBySelectedDate"
+                    />
+                    <groupsDiagram
+                        v-if="data.calendar"
+                        :selectedData="dataBySelectedDate"
+                    />
+                </div>
             </div>
         </div>
     </div>

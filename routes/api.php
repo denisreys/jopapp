@@ -41,7 +41,7 @@ Route::post('createorupdatecheck', [CheckController::class, 'createOrUpdateCheck
 
 Route::post('addtodo', [TodoController::class, 'addTodo']);
 Route::post('deletetodo', [TodoController::class, 'deleteTodo']);
-Route::get('gettodoes', [TodoController::class, 'getTodoes']);
+Route::post('gettodoes', [TodoController::class, 'getTodoes']);
 
 Route::post('savenote', [NoteController::class, 'saveNote']);
 Route::post('deletenote', [NoteController::class, 'deleteNote']);

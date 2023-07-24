@@ -25,10 +25,23 @@
         data () {
           return {
             list: [
-                {icon: 'fa-circle-exclamation', text: 'В разделе статистики не учитывается сегодняшний день.'},
-                {icon: 'fa-circle-exclamation', text: 'Можно обновить сложность повторяющихся дел, если со временем они для вас стали проще или труднее.'},
-                {icon: 'fa-circle-exclamation', text: 'Однажды покурив канабис вы когда-нибудь умрете.'},
-                {icon: 'fa-circle-exclamation', text: 'Если посмотреть на канабис через микроскоп, то можно увидеть много микроскопических ножей и умереть.'},
+                {
+                    icon: 'fa-circle-exclamation', 
+                    text: 'Можно обновить сложность повторяющихся дел, если со временем они для вас стали проще или труднее.'},
+                {
+                    icon: 'fa-circle-exclamation', 
+                    text: 'Однажды покурив канабис вы когда-нибудь умрете.'},
+                {
+                    icon: 'fa-circle-exclamation', 
+                    text: 'Если посмотреть на канабис через микроскоп, то можно увидеть много микроскопических ножей и умереть.'},
+                {
+                    icon: 'fa-circle-exclamation', 
+                    text: 'Выполненый таргет будет оставаться видимым в течении 7 дней, чтобы у вас было время осознать свою крутизну.'
+                },
+                {
+                    icon: 'fa-circle-question', 
+                    text: 'Заметки могут помочь вам, не забыть что-то важное.'
+                },
             ]
           }
         },
@@ -69,13 +82,15 @@
     }
     .loader {
         opacity: 1;
-        position:absolute;
+        position:fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
         z-index: 10;
         background-color: #fffdfdf7;
+        box-sizing: border-box;
+        padding: 15px;
     }
     .loader__container {
         margin: auto;
@@ -90,18 +105,10 @@
         height: 100%;
         align-items: center;
         display: flex;
-    }
-    .loader__container__information__wrap {
-        display: flex;
-    }
-    .loader__title {
-        font-size: 22px;
-        margin-bottom: 10px;
         text-align: center;
-        color: $light-gray;
     }
     .loader__icon {
-        margin-right: 15px;
+        margin-bottom: 15px;
 
         i {
             font-size:26px;
@@ -114,7 +121,7 @@
     .loader__loading__wrap {
         border-radius: 5px;
         background-color: $main-light;
-        margin: 0 50px;
+        margin: 0 13%;
         height: 10px;
     }
     .loader__loading__progress {

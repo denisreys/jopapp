@@ -13,48 +13,68 @@ use Illuminate\Support\Facades\Auth;
 
 class TodoController extends Controller
 {
-    public function getTodoes(){
+    public function getTodoes(Request $request){
         $user_id = Auth::id();
-        $week = [];
-        //GET TODOES WITH CHECKS BY DATE BETWEEN TODAY AND +7 DAYS
+        $data = [];
+        
+        if($request['date']) $sourceDate = Carbon::createFromFormat('Y-m-d H:i:s',  $request['date']);
+        else $sourceDate = Carbon::today();
+
+        if($request['action'] == 'next'){
+            $firstDay = $sourceDate->addDays(4);
+            $lastDay = $sourceDate->copy()->addDays(3);
+        }
+        else if($request['action'] == 'last'){
+            $lastDay = $sourceDate->subDays(1);
+            $firstDay = $sourceDate->copy()->subDays(3);
+        }
+        else {
+            $firstDay = $sourceDate;
+            $lastDay = $sourceDate->copy()->addDays(3);
+        }
+
+        //GET TODOES WITH CHECKS BY DATE BETWEEN TODAY AND +4 DAYS
         $todoes = Todo::with('task.checks')->whereHas('task', function($q) use($user_id){
             $q->where('user_id', $user_id);
-        })->whereBetween('date', [Carbon::today(), Carbon::today()->addDays(7)])->get()->toArray();
-        //GET WEEK WITH DATA
-        for($i = 0; $i < 7;){
-            $day = Carbon::today()->addDays($i);
-            $week[$i]['date'] = date_format($day,'Y-m-d H:i:s');
-            $week[$i]['ymd'] = date_format($day,'Ymd');
-            $week[$i]['day'] = date_format($day, 'j');
-            $week[$i]['day_name'] = date_format($day, 'l');
-            $week[$i]['month_name'] = date_format($day, 'F');
-            $week[$i]['month_name_short'] = date_format($day, 'M');
-            $week[$i]['todoes'] = [];
+        })->whereBetween('date', [$firstDay, $lastDay])->get()->toArray();
+        
+        //Get 4 days with todoes and checks
+        for($i = 0; $i < 4;){
+            if($i) $day = $firstDay->addDays(1);
+            else $day = $firstDay;
+
+            $data[$i]['date'] = date_format($day,'Y-m-d H:i:s');
+            $data[$i]['ymd'] = date_format($day,'Ymd');
+            $data[$i]['day'] = date_format($day, 'j');
+            $data[$i]['day_name'] = date_format($day, 'l');
+            $data[$i]['month_name'] = date_format($day, 'F');
+            $data[$i]['month_name_short'] = date_format($day, 'M');
+            $data[$i]['todoes'] = [];
 
             foreach($todoes as $key => $todo){
                 $todoDateYmd = date_format(date_create($todo['date']), 'Ymd');
-                //ADD TODOES BY WEEK DATE
-                if($todoDateYmd === $week[$i]['ymd']) {
+                //ADD TODOES BY DATE
+                if($todoDateYmd === $data[$i]['ymd']) {
                     if($todo['task']['checks']){
-                        //ADD CHECKS BY WEEK DATE
+                        //ADD CHECKS BY DATE
                         foreach($todo['task']['checks'] as $check){
                             $checkDateYmd = date_format(date_create($check['date']), 'Ymd');
                             
-                            if($checkDateYmd === $week[$i]['ymd']){
+                            if($checkDateYmd === $data[$i]['ymd']){
                                 $todo['task']['check'] = $check;
                                 break;
                             }
                         }
                         unset($todo['task']['checks']);
                     }
-                    array_push($week[$i]['todoes'], $todo);
+                    array_push($data[$i]['todoes'], $todo);
                 }
             }
 
             $i++;
         }
 
-        return $week;
+        return $data;
     }
     public function addTodo(Request $request){
         $array = $request->all();

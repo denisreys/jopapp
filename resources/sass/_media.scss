@@ -1,0 +1,151 @@
+@media only screen and (max-width: 1024px) {
+    .wrapper {
+        padding: 35px 30px;
+        
+        .sb--l {
+            grid-area: a;
+        }
+        .sb--r {
+            grid-area: c;
+            margin-left: 0;
+            margin-bottom: 120px;
+         }
+        .container {
+            grid-area: b;
+        }
+    }
+    .wrapper--dashboard {
+        display: grid !important;
+        grid-template-areas:
+            "a a b b b b"
+            "c c b b b b";
+    }
+    .wrapper--stats {
+        .sb--r {
+            display: none;
+        }
+        .container {
+            margin-right: 0;
+        }
+        .cards__item {
+            padding: 0 10px;
+            border: none;
+        }
+        .cards__item__value__text {
+            font-size: 26px;
+        }
+        .cards__item__value__icon i {
+            font-size: 18px;
+        }
+    }
+}
+@media only screen and (max-width: 768px) {
+    .wrapper {
+        padding: 35px 20px;
+
+        .sb--l {
+            width: 100%;
+
+            .calendar--dashboard {
+                display: none;
+            }
+        }
+        .sb--r {
+            width: 100%;
+            margin-bottom: 30px;
+         }
+        .container {
+            grid-area: b;
+            margin-left: 0;
+        }
+        .nav {
+            box-shadow: 1px 1px 3px #929292;
+            width: 100%;
+            left: 0;
+            padding: 0;
+
+            .router-link-active {
+                border: 0;
+                margin: 0;
+            }
+        }
+        .nav__item {
+            float: left;
+            width: 33.333%!important;
+            text-align: center;
+        }
+        .chart--points {
+            .chart__item {
+                margin-right: 4px;
+            }
+            .chart__scale {
+                margin-right: 5px;
+                margin-bottom: 15px;
+            }
+        }
+        .todoes {
+            margin-top: -5px;
+        }
+    }
+    .wrapper--dashboard {
+        grid-template-areas:
+            "a a a a"
+            "b b b b"
+            "c c c c";
+    }
+    .wrapper--stats {
+        display: grid;
+        grid-template-areas:
+            "a a a a"
+            "b b b b";
+    }
+    
+}
+@media only screen and (max-width: 480px) {
+    .wrapper--auth {
+        max-width: 100%;
+    }
+    .loader__container {
+        width: 100% !important;
+    }
+    .loader__container__information__wrap {
+        display: block; 
+        text-align: center;
+    }
+    .loader__icon {
+        margin-bottom: 10px;
+    }
+    .wrapper--dashboard {
+        padding: 30px 15px;
+
+        .groups__list {
+            column-count: 1 !important; 
+        }
+    }
+    .nav {
+        .nav__item__link__text {
+            display: none;
+        }
+    }
+    .todoes {
+        .todoes__item {
+            flex-basis: 100%;
+        }
+    }
+    .cards__item {
+        padding: 0 5px;
+    }
+    .chart--points {
+        .chart__item {
+            margin-right: 1px !important;
+
+        }
+        .chart__scale {
+            margin-right: 5px;
+            margin-bottom: 15px;
+        }
+        .chart__item__date, .chart__scale__item {
+            font-size: 10px !important;
+        }
+    }
+}

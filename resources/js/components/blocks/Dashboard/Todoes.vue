@@ -1,13 +1,18 @@
 <template>
   <div class="todoes">
-    <ul class="todoes__list" ref="todoes" :style="{maxHeight: height}">
-      <li class="todoes__item" v-for="day in week">
+    <div class="todoes__switch todoes__switch--last">
+      <div class="todoes__switch__btn" @click="getTodoes('last')">
+        <i class="fal fa-angle-up"></i>
+      </div>
+    </div>
+    <ul class="todoes__list" ref="todoes">
+      <li class="todoes__item" v-for="day in days">
         <div class="todoes__dayname">{{ day.day_name }}</div>
         <div class="todoes__table">
           <div class="todoes__table__day">{{ day.day }}</div>
           <div class="todoes__table__month">{{ day.month_name_short }}</div>
           <div class="todoes__table__btn">
-            <a href="#" class="todoes__table__btn__a" @click.prevent="">
+            <a href="#" class="todoes__table__btn__a">
               <i class="fal fa-plus" @click.prevent="
                 $refs.popupAddTodo.popupShow();
                 popups.addTodo.form.date.day = day.day;
@@ -36,10 +41,10 @@
         </div>
       </li>
     </ul>
-    <div class="todoes__show">
-      <a href="#" class="todoes__show__a" @click.prevent="toggleTodoes()">
-        {{ showWeek }}
-      </a>
+    <div class="todoes__switch todoes__switch--next">
+      <div class="todoes__switch__btn" @click="getTodoes('next')">
+        <i class="fal fa-angle-down"></i>
+      </div>
     </div>
     <v-popup
       ref="popupAddTodo"
@@ -112,10 +117,8 @@
   	},
     data () {
       return {
-        week: [],
-        visible: false,
-        height: '100%',
-        showWeek: '',
+        days: [],
+        date: false,
         popups: {
           addTodo: {
             name: 'addTodo',
@@ -179,59 +182,24 @@
         });
       },
       getGroups(){
-        axios.get('/getgroups')
+        axios.post('/getgroups')
           .then((responce) => {
             this.popups.addTodo.form.repeatableTasks = responce.data;
         });
       },
-      changeDisabledInputs(event){
-        this.popups.addTodo.form.repeatableTasks.forEach((group) => {
-          group.tasks.forEach((task) => {
-            if(task.id == this.popups.addTodo.form.selectedTask.id){
-              this.popups.addTodo.form.group = task.group_id; 
-              this.popups.addTodo.form.points = task.points;
-              return true;
-            }
-          });
-        });
-      },
-      getTodoes(){
-        axios.get('/gettodoes')
+      getTodoes(action){
+        axios.post('/gettodoes', {date: this.date, action: action})
           .then((response) => {
+            console.log(response);
             this.$root.loading.loaded++;
-            if(!this.week.length){
-              this.week = response.data;
-              this.$nextTick(() => {
-                this.hideTodoes();
-              })
+            if(!this.days.length){
+              this.days = response.data;
             }
             else {
-              this.week = response.data;
-              this.$nextTick(() => {
-                this.updateHeightTodoes();
-              })
+              this.days = response.data;
+              this.date = response.data[0].date;
             }
         });
-      },
-      showTodoes(){
-        this.height = '100%';
-        this.showWeek = 'Show 4 days ';
-      },
-      hideTodoes(){
-        this.height = (this.$refs.todoes.children[0].clientHeight + this.$refs.todoes.children[2].clientHeight + 20) + 'px';
-
-        var tasksHideCount = 0;
-        for(var i=4; i < 7;i++) tasksHideCount += this.week[i].todoes;
-
-        if(tasksHideCount > 0) this.showWeek = 'Show 7 days ('+tasksHideCount+')';
-        else this.showWeek = 'Show 7 days';
-      },
-      updateHeightTodoes(){
-        if(this.height != '100%') this.hideTodoes();
-      },
-      toggleTodoes(){
-        if(this.height == '100%') this.hideTodoes();
-        else this.showTodoes();
       },
       todoDelete(todo_id){
         if(todo_id){
@@ -250,7 +218,8 @@
   @import './resources/sass/_variables.scss';
 
   .todoes {
-    margin-bottom: 20px;
+    margin-top: -27px;
+    margin-bottom: 12px;
     position: relative;
   }
   .todoes__list {
@@ -258,6 +227,28 @@
     flex-wrap: wrap;
     justify-content: space-between;
     overflow: hidden;
+    margin-bottom: -21px;
+  }
+  .todoes__switch {
+    width: 100%;
+
+    .todoes__switch__btn {
+      display: block;
+      text-align: center;
+      cursor: pointer;
+    }
+    .todoes__switch__btn--disable {
+      opacity: 0.5;
+    }
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+  .todoes__switch--last {
+    margin-bottom: 5px;
+  }
+  .todoes__switch--next {
+    margin-top: 8px;
   }
   .todoes__show {
     width: 100%;
@@ -276,10 +267,6 @@
   .todoes__item {
     flex-basis: calc(50% - 10px);
     margin-bottom: 20px;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
   }
   .todoes__dayname {
     padding: 0 10px;

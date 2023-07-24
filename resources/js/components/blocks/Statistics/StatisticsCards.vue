@@ -28,7 +28,7 @@
         <template v-else-if="cards.difficult >= 1.5 && cards.difficult < 2.5">Eazy</template>
         <template v-else-if="cards.difficult >= 2.5 && cards.difficult < 3.5">Normal</template>
         <template v-else-if="cards.difficult >= 3.5 && cards.difficult < 4.5">Hard</template>
-        <template v-else-if="cards.difficult >= 4.5 && cards.difficult <= 5">Very hard</template>
+        <template v-else-if="cards.difficult >= 4.5 && cards.difficult <= 50">Very hard</template>
         difficulty
       </div>
       <div class="cards__item__dynamics">
@@ -197,7 +197,6 @@
   .cards__item {
     width: 25%;
     float: left;
-    min-width: 150px;
     padding: 0 30px;
     border-right: solid 1px $border;
     box-sizing: border-box;
