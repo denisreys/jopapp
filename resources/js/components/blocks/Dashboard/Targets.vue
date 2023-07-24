@@ -169,13 +169,13 @@
         });
       },
       getTargets(){
-        axios.get('/gettargets').then((r) => {
+        axios.post('/gettargets').then((r) => {
           this.$root.loading.loaded++;
           this.targets = r.data;
         });
       }
     },
-    created() {
+    created(){
       this.getTargets();
     }
   }

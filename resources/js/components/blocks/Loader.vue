@@ -26,21 +26,25 @@
           return {
             list: [
                 {
-                    icon: 'fa-circle-exclamation', 
-                    text: 'Можно обновить сложность повторяющихся дел, если со временем они для вас стали проще или труднее.'},
+                    icon: 'fa-circle-exclamation',//!
+                    text: 'Можно обновить сложность повторяющихся дел, если со временем их сложность для вас изменилась.'},
                 {
-                    icon: 'fa-circle-exclamation', 
+                    icon: 'fa-circle-exclamation',//!
                     text: 'Однажды покурив канабис вы когда-нибудь умрете.'},
                 {
-                    icon: 'fa-circle-exclamation', 
+                    icon: 'fa-circle-exclamation',//!
                     text: 'Если посмотреть на канабис через микроскоп, то можно увидеть много микроскопических ножей и умереть.'},
                 {
-                    icon: 'fa-circle-exclamation', 
+                    icon: 'fa-circle-question', //?
                     text: 'Выполненый таргет будет оставаться видимым в течении 7 дней, чтобы у вас было время осознать свою крутизну.'
                 },
                 {
-                    icon: 'fa-circle-question', 
+                    icon: 'fa-circle-question', //?
                     text: 'Заметки могут помочь вам, не забыть что-то важное.'
+                },
+                {
+                    icon: 'fa-circle-question',//?
+                    text: 'Вы можете запланировать повторяющееся дело выбрав его во вкладке "Repeatable tasks".'
                 },
             ]
           }

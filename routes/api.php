@@ -22,37 +22,45 @@ use App\Http\Controllers\API\TargetController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-Route::post('register', [AuthController::class, 'register']);
-Route::post('login', [AuthController::class, 'login'])->name('login');
 
-Route::post('creategroup', [GroupController::class, 'createGroup']);
-Route::post('editgroup', [GroupController::class, 'editGroup']);
-Route::post('deletegroup', [GroupController::class, 'deleteGroup']);
 
-Route::get('getgroups', [GroupController::class, 'getGroups']);
-Route::post('createtask', [GroupController::class, 'createTask']);
-Route::post('edittask', [GroupController::class, 'editTask']);
-Route::post('deletetask', [GroupController::class, 'deleteTask']);
+//AUTH
+    Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+        return $request->user();
+    });
+    Route::post('register', [AuthController::class, 'register']);
+    Route::post('login', [AuthController::class, 'login'])->name('login');
+//DASHBOARD
+    //groups
+    Route::post('creategroup', [GroupController::class, 'createGroup']);
+    Route::post('editgroup', [GroupController::class, 'editGroup']);
+    Route::post('deletegroup', [GroupController::class, 'deleteGroup']);
+    Route::post('getgroups', [GroupController::class, 'getGroups']);
 
-Route::post('createorupdatecheck', [CheckController::class, 'createOrUpdateCheck']);
+    //tasks
+    Route::post('createtask', [GroupController::class, 'createTask']);
+    Route::post('edittask', [GroupController::class, 'editTask']);
+    Route::post('deletetask', [GroupController::class, 'deleteTask']);
 
-Route::post('addtodo', [TodoController::class, 'addTodo']);
-Route::post('deletetodo', [TodoController::class, 'deleteTodo']);
-Route::post('gettodoes', [TodoController::class, 'getTodoes']);
+    //checks
+    Route::post('createorupdatecheck', [CheckController::class, 'createOrUpdateCheck']);
 
-Route::post('savenote', [NoteController::class, 'saveNote']);
-Route::post('deletenote', [NoteController::class, 'deleteNote']);
-Route::get('getnotes', [NoteController::class, 'getNotes']);
+    //todoes
+    Route::post('addtodo', [TodoController::class, 'addTodo']);
+    Route::post('deletetodo', [TodoController::class, 'deleteTodo']);
+    Route::post('gettodoes', [TodoController::class, 'getTodoes']);
 
-Route::get('getdashboardstats', [StatisticsController::class, 'getDashboardStats']);
-Route::get('getdashboardcalendar', [StatisticsController::class, 'getDashboardCalendar']);
+    //notes
+    Route::post('savenote', [NoteController::class, 'saveNote']);
+    Route::post('deletenote', [NoteController::class, 'deleteNote']);
+    Route::post('getnotes', [NoteController::class, 'getNotes']);
 
-Route::post('getstatistics', [StatisticsController::class, 'getStatistics']);
+    //targets
+    Route::post('addtarget', [TargetController::class, 'addTarget']);
+    Route::post('edittarget', [TargetController::class, 'editTarget']);
+    Route::post('deletetarget', [TargetController::class, 'deleteTarget']);
+    Route::post('gettargets', [TargetController::class, 'getTargets']);
 
-Route::post('addtarget', [TargetController::class, 'addTarget']);
-Route::post('edittarget', [TargetController::class, 'editTarget']);
-Route::post('deletetarget', [TargetController::class, 'deleteTarget']);
-Route::get('gettargets', [TargetController::class, 'getTargets']);
+//STATS
+    Route::post('getstatistics', [StatisticsController::class, 'getStatistics']);
+    Route::post('getdashboardstats', [StatisticsController::class, 'getDashboardStats']);

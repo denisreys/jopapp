@@ -190,7 +190,6 @@
       getTodoes(action){
         axios.post('/gettodoes', {date: this.date, action: action})
           .then((response) => {
-            console.log(response);
             this.$root.loading.loaded++;
             if(!this.days.length){
               this.days = response.data;

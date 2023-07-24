@@ -98,7 +98,7 @@
             newLastYear = Number(this.calendar.data.year), 
             newLastMonth = Number(this.calendar.data.month);
 
-        if(this.calendar.data.month < 12) {
+        if(this.calendar.data.month < 12){
             newNextMonth++;
         }  
         else {

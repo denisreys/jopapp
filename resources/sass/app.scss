@@ -63,6 +63,9 @@ body {
   margin-bottom: 30px;
   flex: 1;
 }
+.container > .container {
+  margin-bottom: 0;
+}
 .sb {
   flex-basis: 200px;
 

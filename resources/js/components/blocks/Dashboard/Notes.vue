@@ -14,11 +14,17 @@
           <li class="sb__list__item note" v-for="note in notes" :key="note.id">
             <div class="note__icon">-</div>
             <div class="note__actions">
-              <a href="#" class="note__actions__a" @click.prevent="deleteNote(note.id)"><i class="fal fa-times"></i></a>
+              <a href="#" 
+                 class="note__actions__a"
+                 @click.prevent="deleteNote(note.id)">
+                 <i class="fal fa-times"></i>
+              </a>
             </div>
             <div class="note__wrap">
-              <div class="note__text" contenteditable @keydown.enter.prevent="event => saveNote(event, note.id)">
-                {{note.text}}
+              <div class="note__text" 
+                   contenteditable
+                   @keydown.enter.prevent="event => saveNote(event, note.id)">
+                  {{note.text}}
               </div>
             </div>
           </li>
@@ -26,14 +32,14 @@
     </template>
     <template v-else>
       <div class="sb__desc">
-        Press enter for save. 
+        Press enter to save. 
       </div>
     </template>
   </div>
 </template>
-
 <script>
   import axios from 'axios';
+  
   export default {
     data () {
       return {
@@ -89,7 +95,7 @@
         }
       },
       getNotes(){
-        axios.get('/getnotes')
+        axios.post('/getnotes')
           .then((r) => {
             this.$root.loading.loaded++;
             this.notes = r.data;

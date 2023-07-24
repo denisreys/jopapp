@@ -115,12 +115,11 @@
     .loader__icon {
         margin-bottom: 10px;
     }
-    .wrapper--dashboard {
+    .wrapper {
         padding: 30px 15px;
-
-        .groups__list {
-            column-count: 1 !important; 
-        }
+    }
+    .groups__list {
+        column-count: 1 !important; 
     }
     .nav {
         .nav__item__link__text {
@@ -136,16 +135,28 @@
         padding: 0 5px;
     }
     .chart--points {
+        .chart__list--days {
+            .chart__item__line {
+                border-radius: 0;
+            }
+            & > .chart__item:nth-child(2n) .chart__item__date   {
+                opacity: 0;
+            }
+        }
         .chart__item {
-            margin-right: 1px !important;
-
+            margin-right: 0px !important;
         }
-        .chart__scale {
-            margin-right: 5px;
-            margin-bottom: 15px;
+        
+    }
+    .chart--groups {
+        .chart__container {
+            flex-direction: column;
         }
-        .chart__item__date, .chart__scale__item {
-            font-size: 10px !important;
+        .chart__list--circle {
+            margin: 0 auto 20px;
+        }
+        .chart__list--lines {
+            margin-left: 0 !important; 
         }
     }
 }

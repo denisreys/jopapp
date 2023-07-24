@@ -43,7 +43,7 @@
       totalUpdate(isbomb){
         this.oldTotal = this.total;
 
-        axios.get('/getdashboardstats')
+        axios.post('/getdashboardstats')
           .then((response) => {
             this.$root.loading.loaded++;
             if(this.countLoad == 0 || !isbomb)

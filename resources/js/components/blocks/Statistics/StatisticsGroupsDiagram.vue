@@ -15,27 +15,23 @@
           </circle>
         </svg>
       </div>
-      <div class="chart__container chart__list--lines">
-        <div class="chart__list">
-          <div class="chart__item"  v-for="item in chart.groups" >
-            <div class="chart__item__name">{{ item.name }}</div>
-            <div class="chart__item__line">
-              <div class="chart__item__line__paint" :indexGroup="item.id + item.points" :style="[
-                {backgroundColor: '#'+item.color},
-                {width: ((item.points / chart.totalPoints) * 100)+'%'}]" 
-                :title="item.points+' Points'"
-                :key="item.key">
-              </div>
+      <div class="chart__list chart__list--lines">
+        <div class="chart__item"  v-for="item in chart.groups" >
+          <div class="chart__item__name">{{ item.name }}</div>
+          <div class="chart__item__line">
+            <div class="chart__item__line__paint" :indexGroup="item.id + item.points" :style="[
+              {backgroundColor: '#'+item.color},
+              {width: ((item.points / chart.totalPoints) * 100)+'%'}]" 
+              :title="item.points+' Points'"
+              :key="item.key">
             </div>
-            <div class="chart__item__value">{{ item.width+'%' }}</div>
           </div>
+          <div class="chart__item__value">{{ item.width+'%' }}</div>
         </div>
       </div>
     </div>
   </div>
-  
 </template>
-
 <script>
   export default {
     props: {

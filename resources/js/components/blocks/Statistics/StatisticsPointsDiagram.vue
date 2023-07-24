@@ -9,8 +9,8 @@
           <div class="chart__scale__item__value">{{ item }}</div>
         </div>
       </div>
-      <div class="chart__list">
-          <div class="chart__item" v-if="selectedData.days" v-for="day in selectedData.days" :style="{width: (100 / selectedData.days.length) +'%'}">
+      <div class="chart__list chart__list--days" v-if="selectedData.days">
+          <div class="chart__item"  v-for="day in selectedData.days" :style="{width: (100 / selectedData.days.length) +'%'}">
             <div class="chart__item__line">
               <div class="chart__item__line__paint" 
                 :style="{height: ((day.points/chart.biggestValue) * 100)+'%'}" 
@@ -20,7 +20,9 @@
             </div>
             <div class="chart__item__date">{{ day.day }}</div>
           </div>
-          <div class="chart__item" v-if="selectedData.months" v-for="month in selectedData.months">
+      </div>
+      <div class="chart__list chart__list--months" v-else-if="selectedData.months">
+          <div class="chart__item" v-for="month in selectedData.months">
             <div class="chart__item__line">
               <div class="chart__item__line__paint" 
                 :style="{height: ((month.points/chart.biggestValue) * 100)+'%'}" 
@@ -34,7 +36,6 @@
     </div>
   </div>
 </template>
-
 <script>
   export default {
     props: {
@@ -111,7 +112,7 @@
       align-items: stretch;
     }
     .chart__item {
-      flex-grow: 1;
+      flex: 1;
       margin-right: 5px;
       flex-direction: column;
       display: flex;
@@ -124,7 +125,7 @@
       background-color: $main-light;
       height: 100%;
       margin-bottom: 10px;
-      width: 100%;
+      min-width: 100%;
       display: flex;
       align-items: flex-end;
       border-radius: 5px;
@@ -142,7 +143,6 @@
       }
     }
     .chart__item__date {
-      width: 9px;
       margin: auto;
     }
     .chart__item__date, .chart__scale__item {

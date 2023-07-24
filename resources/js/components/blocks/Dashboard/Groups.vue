@@ -374,7 +374,7 @@
         });
       },
       getGroups(){
-        axios.get('/getgroups')
+        axios.post('/getgroups')
           .then((response) => {
             this.$root.loading.loaded++;
             this.list = response.data;
