@@ -133,6 +133,7 @@ class StatisticsController extends Controller
 
         $checks = \Models\Check::whereHas('task', function($q) use($user_id){
                                     $q->where('user_id', $user_id);
+                                    $q->where('state', '!=' , 3);
                                 })->whereBetween('date', [$dateFrom, $dateTo])
                                 ->with('task.group')->get();                     
 

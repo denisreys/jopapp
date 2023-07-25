@@ -1,7 +1,7 @@
 @media only screen and (max-width: 1024px) {
     .wrapper {
         padding: 35px 30px;
-        
+
         .sb--l {
             grid-area: a;
         }
@@ -14,11 +14,12 @@
             grid-area: b;
         }
     }
-    .wrapper--dashboard {
+    .wrapper--dashboard, .wrapper--stats {
         display: grid !important;
+        grid-template-columns: 200px 30px;
         grid-template-areas:
-            "a a b b b b"
-            "c c b b b b";
+        "a a b b b b"
+        "c c b b b b";
     }
     .wrapper--stats {
         .sb--r {
