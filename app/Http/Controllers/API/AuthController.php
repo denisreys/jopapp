@@ -38,7 +38,7 @@ class AuthController extends Controller
             ];
             //ADD DEFAULT GROUPS AND REPEATABLE TASKS
             $groupEducation = \Models\Group::create(['name' => 'Образование', 'icon' => 'book', 'color' => 'aad8ee', 'user_id' => $user->id, 'active' => 1]);
-            $groupSport = \Models\Group::create(['name' => 'Спорт', 'icon' => 'dumpbell', 'color' => 'aaeeb2', 'user_id' => $user->id, 'active' => 1]);
+            $groupSport = \Models\Group::create(['name' => 'Спорт', 'icon' => 'dumbbell', 'color' => 'aaeeb2', 'user_id' => $user->id, 'active' => 1]);
             $groupHobby = \Models\Group::create(['name' => 'Хобби', 'icon' => 'lightbulb-on', 'color' => 'd6a2ed', 'user_id' => $user->id, 'active' => 1]);
             
             \Models\Task::insert([
