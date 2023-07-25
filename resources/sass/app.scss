@@ -4,13 +4,18 @@
 @import "fontawesome/scss/solid.scss";
 @import "fontawesome/scss/light.scss";
 
-
-
-// Variables
 @import 'variables';
-@import 'inputs';
-@import 'buttons';
+@import 'abbreviations';
 
+// Components
+@import 'components/inputs';
+@import 'components/buttons';
+@import 'components/sections';
+@import 'components/tabs';
+@import 'components/calendar';
+@import 'components/auth';
+
+@import 'media';
 
 a {
   text-decoration: none;
@@ -18,7 +23,6 @@ a {
 :hover {
   transition: visibility 0s, opacity 0.1s linear;
 }
-
 ul {
   list-style: none;
   margin: 0;
@@ -27,15 +31,6 @@ ul {
 a {
   line-height: 1;
 }
-.mt-15 {
-  margin-top: 15px;
-}
-.mt-30 {
-  margin-top: 30px;
-}
-.w-100 {
-  width: 100%;
-}
 body {
   font-family: 'Neucha', cursive;
   letter-spacing: 0.4px;
@@ -43,302 +38,4 @@ body {
   color: $black;
   margin:0;
 }
-.wrapper {
-  display: flex;
-  margin: auto;
-}
-.wrapper--dashboard, .wrapper--stats {
-  max-width: 1200px;
-  padding: 40px;
-  min-height: 100vh;
-  box-sizing: border-box;
-}
-.wrapper--auth {
-  max-width: 350px;
-  padding: 20px;
-  box-sizing: border-box;
-}
-.container {
-  position: relative;
-  margin-bottom: 30px;
-  flex: 1;
-}
-.container > .container {
-  margin-bottom: 0;
-}
-.sb {
-  flex-basis: 200px;
 
-  &>*:not(:last-child) {
-    margin-bottom: 30px;
-  }
-}
-.sb--r + .container {
-  margin-right: 230px;
-}
-.sb--l {
-  width: 200px;
-  float: left;
-  margin-right: 30px;
-  z-index: 2;
-}
-.sb--r {
-  width: 200px;
-  float: right;
-  margin-left: 30px;
-}
-
-.sb__block {
-  position: relative;
-  border: solid 2px $black;
-  border-radius: 2px;
-}
-.sb__block.sb__block--targets, .sb__block.sb__block--notes {
-  &:hover {
-    .sb__block__title {
-      opacity: 0;
-    }
-    .sb__add {
-      display: block;
-    }
-  }
-}
-.sb__block__title {
-  margin-top: -12px;
-  text-align: center;
-}
-.sb__block__title__span {
-  background: #fff;
-  padding: 0 15px;
-  text-transform: uppercase;
-  letter-spacing: 2.4px;
-  font-size: 16px;
-}
-.sb__desc {
-  font-size: 14px;
-  color: $light-gray;
-}
-.sb__list, .sb__desc {
-  padding: 20px 15px;
-}
-.sb__list__item {
-  margin-bottom: 8px;
-  position: relative;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-.sb__list__item__name {
-  margin-left: 20px;
-  font-size: 18px;
-}
-.sb__add {
-  position: absolute;
-  top: -13px;
-  width: 100%;
-  text-align: center;
-  display: none;
-}
-.sb__add__btn {
-  text-decoration: none;
-  padding: 0 15px;
-  background: #fff;
-  color: $black;
-
-  .fal {
-    font-size: 24px;
-  }
-}
-.sb__block__title {
-  text-align: center;
-}
-.sb__list__check {
-  float: left;
-  position: relative;
-
-  input {
-    opacity: 0;
-    z-index: -1;
-    position: absolute;
-  }
-  .sb__list__check__fake {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border: 2px solid $black;
-    border-radius: 30px;
-    cursor: pointer;
-  }
-}
-.sb__list__check>input:checked+.sb__list__check__fake{
-  background: $black;
-}
-.sb__list__check>input:not(:checked)+.sb__list__check__fake:hover{
-  background: #e8e8e8;
-}
-.stat__count {
-  text-align: center;
-}
-.stat__count__n {
-  font-size: 64px;
-  line-height: 54px;
-  background: #fff;
-  padding: 0 18px;
-}
-.header__bottom {
-  .calendar, .flow {
-    flex: 0 1 250px;
-  }
-  .panel {
-    align-self: flex-end;
-  }
-}
-.header__bottom__title {
-  margin-bottom: 10px;
-}
-.w-100 {
-  width: 100%;
-}
-.tabs {
-  overflow: hidden;
-}
-.tabs--popup {
-  margin-bottom: 20px;
-
-  .tabs__item {
-    float: left;
-    padding: 5px 12px;
-    margin-right: 2px;
-    display: block;
-    border-radius: 2px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  .active {
-    background-color: $main;
-  }
-}
-//AUTH
-.auth {
-  width: 100%;
-
-  .input {
-    width: 100%;
-    margin-bottom: 10px;
-  }
-}
-.auth__header {
-  margin-bottom: 10px;
-  text-align: center;
-}
-.auth__header__img {
-  box-sizing: border-box;
-  height: 200px;
-  padding: 20px 60px;
-}
-.auth__links {
-  margin-top: 10px;
-}
-.auth__errors__item {
-  color: red;
-  margin-bottom: 5px;
-}
-//CALENDAR MAIN STYLES
-.calendar__header {
-  position: relative;
-  margin-bottom: 10px;
-  min-height: 22px;
-}
-.calendar__header__value {
-  width: 100%;
-  text-align: center;
-}
-.calendar__actions {
-  position: absolute;
-  width: 100%;
-}
-.calendar__actions__arrow {
-  float:right;
-  cursor: pointer;
-}
-.calendar__actions__arrow:hover {
-  color: #000;
-}
-.calendar__actions__arrow:first-child {
-  float:left;
-}
-.calendar_actions__arrow--disable {
-  opacity: 0.5;
-}
-.calendar {
-  .calendar__tb {
-    width: 100%;
-  }
-  .calendar__row {
-    &:first-child th {
-      padding-bottom: 5px;
-    }
-  }
-}
-.calendar__tb__head, .calendar__tb__main {
-  display: flex;
-  max-width: 100%;
-  flex-wrap: wrap;
-}
-.calendar__cell {
-  text-align: center;
-  box-sizing: border-box;
-  border-radius: 2px;
-  font-size: 16px;
-}
-.calendar__cell--sucess {
-  background: #c9ffbed4;
-}
-.calendar__cell--now {
-  background: $main;
-}
-
-.main__header {
-  background-color: $main;
-  padding: 12px 14px;
-  overflow: hidden;
-  margin-bottom: 25px;
-  position: relative;
-  border-radius: 2px;
-}
-.main__header__title {
-  text-transform: uppercase;
-  float: left;
-  font-size: 16px;
-  letter-spacing: 2px;
-}
-.main__header__add {
-  position: absolute;
-  right: 14px;top:11px;
-  opacity: 0.2;
-
-  i {
-    font-size: 22px;
-    color: $black;
-  }
-}
-.main__header:hover .main__header__add {
-  opacity: 1;
-}
-.loading {
-  background: #f0f0f0!important;
-  width: 100%;
-
-  *{
-    opacity: 0;
-  }
-  .nav {
-    opacity: 1!important;
-    z-index: 10;
-  }
-}
-
-
-
-@import 'media';

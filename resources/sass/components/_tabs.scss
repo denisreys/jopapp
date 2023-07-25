@@ -1,0 +1,19 @@
+.tabs {
+  overflow: hidden;
+}
+.tabs--popup {
+  margin-bottom: 20px;
+
+  .tabs__item {
+    float: left;
+    padding: 5px 12px;
+    margin-right: 2px;
+    display: block;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  .active {
+    background-color: $main;
+  }
+}

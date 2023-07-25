@@ -92,11 +92,22 @@
     width: 100%;
     top: -50px;
   }
-  .stat__count__t {
-    margin-top: 5px;
-    font-size: 14px;
-    color: $light-gray;
+  .stat__count {
+    text-align: center;
+
+    .stat__count__n {
+      font-size: 64px;
+      line-height: 54px;
+      background: #fff;
+      padding: 0 18px;
+    }
+    .stat__count__t {
+      margin-top: 5px;
+      font-size: 14px;
+      color: $light-gray;
+    }
   }
+
   .sb__stat__bomb__img {
     width: 130px;
   }

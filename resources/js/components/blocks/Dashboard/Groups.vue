@@ -1,9 +1,9 @@
 <template>
-  <div class="main__groups">
-    <div class="main__header">
-      <div class="main__header__title">Groups and Repeatable tasks</div>
-      <div class="main__header__add">
-        <a href="#" class="main__header__add__a" 
+  <div class="container__groups">
+    <div class="container__header">
+      <div class="container__header__title">Groups and Repeatable tasks</div>
+      <div class="container__header__add">
+        <a href="#" class="container__header__add__a" 
         @click.prevent="$refs.popupGroupCreate.popupShow();">
         <i class="fal fa-plus"></i>
       </a>
@@ -271,6 +271,10 @@
         },
         colors: [
           {
+            name: 'jopapp',
+            code: 'f9e3aa'
+          },
+          {
             name: 'yellow',
             code: 'ffe494'
           },
@@ -306,8 +310,24 @@
             name: 'orange',
             code: 'ffbb89'
           },
+          {
+            name: 'brown',
+            code: 'ab8a73'
+          },
+          {
+            name: 'green2',
+            code: 'acc17a'
+          },
+          {
+            name: 'orange2',
+            code: 'e89441'
+          },
+          {
+            name: 'almostblack',
+            code: '373530'
+          },
         ],
-        icons: ['book', 'desktop', 'code', 'running', 'heartbeat', 'graduation-cap', 'utensils', 'dumbbell', 'biking', 'briefcase', 'lightbulb-on', 'money-bill']
+        icons: ['book', 'desktop', 'code', 'running', 'heartbeat', 'graduation-cap', 'utensils', 'dumbbell', 'biking', 'briefcase', 'lightbulb-on', 'money-bill', 'house', 'user']
       }
     },
     methods: {
@@ -425,11 +445,11 @@
       font-size: 26px;
     }
     .fas {
-      position:absolute;
-      left: 2px;
-      top: 2px;
-      opacity: 0.5;
-      font-size: 22px;
+      position: absolute;
+      left: 3px;
+      top: 3px;
+      opacity: 0.4;
+      font-size: 20px;
     }
   }
   .group__t {

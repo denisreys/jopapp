@@ -1,0 +1,24 @@
+.auth {
+  width: 100%;
+
+  .input {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
+.auth__header {
+  margin-bottom: 10px;
+  text-align: center;
+}
+.auth__header__img {
+  box-sizing: border-box;
+  height: 200px;
+  padding: 20px 60px;
+}
+.auth__links {
+  margin-top: 10px;
+}
+.auth__errors__item {
+  color: red;
+  margin-bottom: 5px;
+}

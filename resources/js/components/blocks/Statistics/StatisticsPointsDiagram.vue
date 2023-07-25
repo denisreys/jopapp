@@ -1,7 +1,7 @@
 <template>
   <div class="chart chart--points">
-    <div class="main__header">
-      <div class="main__header__title">Points</div>
+    <div class="container__header">
+      <div class="container__header__title">Points</div>
     </div>
     <div class="chart__container">
       <div class="chart__scale">

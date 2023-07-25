@@ -1,0 +1,164 @@
+// Wrapper
+.wrapper {
+  display: flex;
+  margin: auto;
+}
+.wrapper--dashboard, .wrapper--stats {
+  max-width: 1200px;
+  padding: 40px;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+.wrapper--auth {
+  max-width: 350px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+// Container
+.container {
+  position: relative;
+  margin-bottom: 30px;
+  flex: 1;
+}
+.container > .container {
+  margin-bottom: 0;
+}
+.container__header {
+  background-color: $main;
+  padding: 12px 14px;
+  overflow: hidden;
+  margin-bottom: 25px;
+  position: relative;
+  border-radius: 2px;
+}
+.container__header__title {
+  text-transform: uppercase;
+  float: left;
+  font-size: 16px;
+  letter-spacing: 2px;
+}
+.container__header__add {
+  position: absolute;
+  right: 14px;
+  top:11px;
+  opacity: 0.2;
+
+  i {
+    font-size: 22px;
+    color: $black;
+  }
+}
+.container__header:hover .container__header__add {
+  opacity: 1;
+}
+// Sidebar
+.sb {
+  flex-basis: 200px;
+
+  &>*:not(:last-child) {
+    margin-bottom: 30px;
+  }
+}
+.sb--r + .container {
+  margin-right: 230px;
+}
+.sb--l {
+  width: 200px;
+  float: left;
+  margin-right: 30px;
+  z-index: 2;
+}
+.sb--r {
+  width: 200px;
+  float: right;
+  margin-left: 30px;
+}
+.sb__block {
+  position: relative;
+  border: solid 2px $black;
+  border-radius: 2px;
+}
+.sb__block.sb__block--targets, .sb__block.sb__block--notes {
+  &:hover {
+    .sb__block__title {
+      opacity: 0;
+    }
+    .sb__add {
+      display: block;
+    }
+  }
+}
+.sb__block__title {
+  margin-top: -12px;
+  text-align: center;
+}
+.sb__block__title__span {
+  background: #fff;
+  padding: 0 15px;
+  text-transform: uppercase;
+  letter-spacing: 2.4px;
+  font-size: 16px;
+}
+.sb__desc {
+  font-size: 14px;
+  color: $light-gray;
+}
+.sb__list, .sb__desc {
+  padding: 20px 15px;
+}
+.sb__list__item {
+  margin-bottom: 8px;
+  position: relative;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+.sb__list__item__name {
+  margin-left: 20px;
+  font-size: 18px;
+}
+.sb__add {
+  position: absolute;
+  top: -13px;
+  width: 100%;
+  text-align: center;
+  display: none;
+}
+.sb__add__btn {
+  text-decoration: none;
+  padding: 0 15px;
+  background: #fff;
+  color: $black;
+
+  .fal {
+    font-size: 24px;
+  }
+}
+.sb__block__title {
+  text-align: center;
+}
+.sb__list__check {
+  float: left;
+  position: relative;
+
+  input {
+    opacity: 0;
+    z-index: -1;
+    position: absolute;
+  }
+  .sb__list__check__fake {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border: 2px solid $black;
+    border-radius: 30px;
+    cursor: pointer;
+  }
+}
+.sb__list__check>input:checked+.sb__list__check__fake{
+  background: $black;
+}
+.sb__list__check>input:not(:checked)+.sb__list__check__fake:hover{
+  background: #e8e8e8;
+}
