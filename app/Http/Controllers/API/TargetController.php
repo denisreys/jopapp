@@ -5,13 +5,12 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Task;
 
 class TargetController extends Controller
 {
     public function getTargets(){
         //YOU CAN SEE TARGETS A WEEK AFTER CHECK
-        $response = Task::where(['user_id' => Auth::id(), 'state' => 3, 'active' => 1])
+        $response = \Models\Task::where(['user_id' => Auth::id(), 'state' => 3, 'active' => 1])
                     ->doesntHave('checkLastWeek')
                     ->orderBy('id')
                     ->with('checkWeek')->get();
@@ -36,7 +35,7 @@ class TargetController extends Controller
             return response()->json($response, 400);
         }
 
-        Task::create($array);
+        \Models\Task::create($array);
     }
     public function editTarget(Request $request){
         $array = $request->all();
@@ -55,7 +54,7 @@ class TargetController extends Controller
             return response()->json($response, 400);
         }
 
-        Task::where([
+        \Models\Task::where([
             'id' => $array['id'],
             'user_id' => Auth::id()
         ])->update([
@@ -67,7 +66,7 @@ class TargetController extends Controller
         $array = $request->all();
 
         if($array['id']){
-            Task::where([
+            \Models\Task::where([
                 'id' => $array['id'],
                 'user_id' => Auth::id()
             ])->update([

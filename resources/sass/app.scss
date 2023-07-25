@@ -245,9 +245,6 @@ body {
   margin-bottom: 5px;
 }
 //CALENDAR MAIN STYLES
-.calendar {
-
-}
 .calendar__header {
   position: relative;
   margin-bottom: 10px;
@@ -300,10 +297,6 @@ body {
 }
 .calendar__cell--now {
   background: $main;
-  
-  .calendar__cell__value {
-    //color: #fff;
-  }
 }
 
 .main__header {

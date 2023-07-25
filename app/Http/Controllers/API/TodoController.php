@@ -5,9 +5,6 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
-use App\Models\Task;
-use App\Models\Todo;
-use App\Models\Group;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -34,7 +31,7 @@ class TodoController extends Controller
         }
 
         //GET TODOES WITH CHECKS BY DATE BETWEEN TODAY AND +4 DAYS
-        $todoes = Todo::with('task.checks')->whereHas('task', function($q) use($user_id){
+        $todoes = \Models\Todo::with('task.checks')->whereHas('task', function($q) use($user_id){
             $q->where('user_id', $user_id);
         })->whereBetween('date', [$firstDay, $lastDay])->get()->toArray();
         
@@ -92,10 +89,10 @@ class TodoController extends Controller
                 return response()->json($response, 400);
             }
             
-            $isItYours = Task::where(['id'=> $array['id'], 'user_id' => Auth::id()])->first();
+            $isItYours = \Models\Task::where(['id'=> $array['id'], 'user_id' => Auth::id()])->first();
             
             if($isItYours){
-                Todo::create(['task_id' => $array['id'], 'date' => $array['date']]);
+                \Models\Todo::create(['task_id' => $array['id'], 'date' => $array['date']]);
             }
         }
         else if(isset($array['name']) && isset($array['points'])){
@@ -113,7 +110,7 @@ class TodoController extends Controller
             }
             //IS IT YOUR THE GROUP?
             if($array['group_id']){
-                $isGroupYours = Group::where(['id' => $array['group_id'], 'user_id' => Auth::id()])->first();
+                $isGroupYours = \Models\Group::where(['id' => $array['group_id'], 'user_id' => Auth::id()])->first();
 
                 if(!$isGroupYours) {
                     $response = [
@@ -124,14 +121,14 @@ class TodoController extends Controller
                 }
             }
             
-            $task_id = Task::create(['name' => $array['name'], 
+            $task_id = \Models\Task::create(['name' => $array['name'], 
                                          'points' => $array['points'], 
                                          'group_id' => $array['group_id'], 
                                          'user_id' => Auth::id(),
                                          'state' => 1])->id;
             
             if($task_id)
-                Todo::create(['task_id' => $task_id, 'date' => $array['date']]);
+            \Models\Todo::create(['task_id' => $task_id, 'date' => $array['date']]);
         }
 
     }
@@ -150,18 +147,18 @@ class TodoController extends Controller
 
         //IS IT YOUR THE TODO?
         $todo_id = $array['todo_id'];
-        $task = Task::where('user_id', Auth::id())
+        $task = \Models\Task::where('user_id', Auth::id())
                     ->whereHas('todo', function($q) use($todo_id){
                         $q->where('id', $todo_id);
                   })->first();
         
         if($task){
             if($task['state'] == 1){
-                Task::where('id', $task['id'])->delete();
-                Todo::where('id', $todo_id)->delete();
+                \Models\Task::where('id', $task['id'])->delete();
+                \Models\Todo::where('id', $todo_id)->delete();
             }
             else if($task['state'] == 2)
-                Todo::where('id', $todo_id)->delete();
+            \Models\Todo::where('id', $todo_id)->delete();
         }
     }
 }

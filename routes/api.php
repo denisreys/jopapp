@@ -10,6 +10,7 @@ use App\Http\Controllers\API\StatisticsController;
 use App\Http\Controllers\API\TodoController;
 use App\Http\Controllers\API\NoteController;
 use App\Http\Controllers\API\TargetController;
+use App\Http\Controllers\API\TaskController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,9 +39,9 @@ use App\Http\Controllers\API\TargetController;
     Route::post('getgroups', [GroupController::class, 'getGroups']);
 
     //tasks
-    Route::post('createtask', [GroupController::class, 'createTask']);
-    Route::post('edittask', [GroupController::class, 'editTask']);
-    Route::post('deletetask', [GroupController::class, 'deleteTask']);
+    Route::post('createtask', [TaskController::class, 'createTask']);
+    Route::post('edittask', [TaskController::class, 'editTask']);
+    Route::post('deletetask', [TaskController::class, 'deleteTask']);
 
     //checks
     Route::post('createorupdatecheck', [CheckController::class, 'createOrUpdateCheck']);

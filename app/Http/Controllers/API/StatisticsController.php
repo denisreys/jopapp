@@ -6,10 +6,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
-use App\Models\Task;
-use App\Models\Todo;
-use App\Models\Check;
-use App\Models\Group;
 
 class StatisticsController extends Controller
 {
@@ -23,7 +19,7 @@ class StatisticsController extends Controller
         $data['month_name'] = date('F');
         $data['today'] = date('j');
         $data['request'] = $request;
-        $data['checks'] = Check::whereHas('task', function($q) use($user_id) {
+        $data['checks'] = \Models\Check::whereHas('task', function($q) use($user_id) {
                                 $q->where(['user_id' => $user_id]);
                                 $q->where('state', '!=' , 3);
                             })
@@ -135,7 +131,7 @@ class StatisticsController extends Controller
         $response['total'] = 0;
         $response['diagram'] = [];
 
-        $checks = Check::whereHas('task', function($q) use($user_id){
+        $checks = \Models\Check::whereHas('task', function($q) use($user_id){
                                     $q->where('user_id', $user_id);
                                 })->whereBetween('date', [$dateFrom, $dateTo])
                                 ->with('task.group')->get();                     
@@ -177,7 +173,7 @@ class StatisticsController extends Controller
     }
     function addTodoesToCalendar($data){
         $user_id = Auth::id();
-        $data['todoes'] = Todo::with('task.checks')->whereHas('task', function($q) use($user_id){
+        $data['todoes'] = \Models\Todo::with('task.checks')->whereHas('task', function($q) use($user_id){
             $q->where('user_id', $user_id);
         })->whereDate('date', '<', Carbon::now())->get();
 
