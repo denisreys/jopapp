@@ -56,7 +56,7 @@
       border-radius: 2px;
 
       .nav__item__link__text {
-        margin-right: 4px;
+        margin-left: 4px;
       }
       .nav__item__link__icon {
         width: 22px;

@@ -104,7 +104,6 @@
     </v-popup>
   </div>
 </template>
-
 <script>
   import axios from 'axios';
   import task from './Task.vue';
@@ -268,7 +267,7 @@
     margin-bottom: 20px;
   }
   .todoes__dayname {
-    padding: 0 10px;
+    padding: 0 15px;
     line-height: 25px;
     font-size: 16px;
     letter-spacing: 2.4px;
@@ -278,7 +277,7 @@
   }
   .todoes__table {
     display: flex;
-    padding: 2px 14px;
+    padding: 2px 15px;
     text-align: center;
     align-items: center;
     border-bottom: solid 2px $black;
