@@ -140,7 +140,7 @@
     }
     .calendar__cell {
       width: calc(100% / 7);
-      padding: 4px;
+      padding: 2.5px 3px;
     }
     .calendar__head {
       .calendar__cell__value {

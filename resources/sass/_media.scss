@@ -176,4 +176,20 @@
             margin-left: 0 !important; 
         }
     }
+    .popup__window {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+    }
+    .popup__header {
+        .popup__close {
+            right: 7px;
+            top: 11px;
+        }
+    }
+    .popup__container, .popup__footer, .popup__header{
+        padding: 15px!important;
+    }
 }
