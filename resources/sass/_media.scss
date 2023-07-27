@@ -74,10 +74,6 @@
             float: left;
             width: 33.333%!important;
             text-align: center;
-
-            .nav__item__link {
-                padding: 12px 0;
-            }
         }
         .chart--points {
             .chart__item {
@@ -140,6 +136,9 @@
         column-count: 1 !important; 
     }
     .nav {
+        .nav__item__link__icon {
+            font-size: 18px;
+        }
         .nav__item__link__text {
             display: none;
         }
